@@ -43,26 +43,36 @@ def _strip_ansi(s):
     return re.sub(r'\x1b\[[0-9;]*[A-Za-z]', '', s)
 
 
+def _task_ids():
+    """Return the set of currently known task IDs from `task -l`."""
+    r = subprocess.run(['task', '-l'], capture_output=True, text=True)
+    ids = set()
+    for line in _strip_ansi(r.stdout).splitlines():
+        parts = line.split()
+        if parts and parts[0].isdigit():
+            ids.add(int(parts[0]))
+    return ids
+
+
 def submit(cmd, label=''):
     """Submit a command via the task spooler. Returns the task ID (int)."""
     full = ['task', '-G', '1', '-m', '45'] + cmd
     print(f"Submitting{' ' + label if label else ''}: {' '.join(cmd)}")
+    before = _task_ids()
     result = subprocess.run(full, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"ERROR submitting task:\n{result.stderr}")
         sys.exit(1)
-    output = _strip_ansi(result.stdout + result.stderr)
-    nums = re.findall(r'\d+', output)
-    if not nums:
-        # fallback: parse the task list and take the highest (most recent) ID
-        lr = subprocess.run(['task', '-l'], capture_output=True, text=True)
-        lo = _strip_ansi(lr.stdout)
-        ids = [int(p[0]) for p in (l.split() for l in lo.splitlines() if l.split() and l.split()[0].isdigit())]
-        if not ids:
-            print(f"ERROR: could not determine task ID. Submit output: {repr(result.stdout + result.stderr)}")
-            sys.exit(1)
-        task_id = max(ids)
+    after = _task_ids()
+    new_ids = after - before
+    if new_ids:
+        task_id = max(new_ids)
     else:
+        # last resort: find an integer in the submission output
+        nums = re.findall(r'\d+', _strip_ansi(result.stdout + result.stderr))
+        if not nums:
+            print(f"ERROR: could not determine task ID.\nSubmit output: {repr(result.stdout + result.stderr)}\nTask list: {after}")
+            sys.exit(1)
         task_id = int(nums[-1])
     print(f"  → task {task_id}")
     return task_id
