@@ -73,13 +73,45 @@ python sample.py --out_dir=out-selfplay-babylm-char --device=mps
 
 ## Comparing baseline vs self-play
 
-Run both training scripts and compare the `val loss` printed at each eval interval.
+Run both training scripts then evaluate with `eval.py`:
+
+```sh
+python eval.py \
+    --baseline_dir=out-babylm-char \
+    --selfplay_dir=out-babylm-selfplay-char \
+    --device=mps
+```
+
+This reports:
+
+- **Val loss and perplexity** side by side
+- **Top-1 character accuracy** overall
+- **Common vs rare character accuracy** — the key test of the self-play hypothesis.
+  Common characters are the ~16 chars (space, `etaoinshrdlu`, newline) that cover 80% of
+  all tokens. Rare characters are everything else. Self-play should specifically help on rare chars.
+- **Side-by-side generation** from the same seed and prompt
+
 The self-play model typically descends more slowly in early iterations — this is expected,
-as it is spending gradient budget on harder positions rather than easy wins.
-The crossover point (where self-play catches the baseline) is the key metric to watch.
+as it spends gradient budget on harder positions rather than easy wins.
+The crossover point (where self-play catches the baseline on rare char accuracy) is the key
+metric to watch.
 
 For BabyLM, allow at least **1000 iterations** before drawing conclusions.
 At 250 iterations the model has seen only ~7.5% of the corpus.
+
+### Eval flags
+
+| Flag | Default | Description |
+|---|---|---|
+| `--baseline_dir` | `out-babylm-char` | Baseline checkpoint directory |
+| `--selfplay_dir` | `out-babylm-selfplay-char` | Self-play checkpoint directory |
+| `--device` | `cpu` | Device for inference |
+| `--eval_iters` | `200` | Validation batches to average over |
+| `--prompt` | `\n` | Seed text for generation comparison |
+| `--max_new_tokens` | `400` | Characters to generate |
+| `--temperature` | `0.8` | Sampling temperature |
+| `--seed` | `1337` | RNG seed (same for both models) |
+| `--common_threshold` | `0.8` | Cumulative frequency defining "common" chars |
 
 ## Config reference
 
