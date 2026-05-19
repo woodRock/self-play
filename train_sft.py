@@ -1,12 +1,13 @@
 """
-Supervised fine-tuning (SFT) for nanoGPT.
+Supervised fine-tuning (SFT) for nanoGPT — dataset-agnostic.
 
-Loads a pretrained checkpoint from pretrain_dir and fine-tunes on a new dataset
-with a standard language-modelling objective.
+The dataset is specified in the config file via sft_dataset / sft_data_dir.
+All loaders live in sft_datasets/ and return (X, Y, mask) batches where mask
+is a {0,1} float tensor indicating which positions contribute to the loss.
 
 Usage:
     python train_sft.py config/finetune_blimp.py
-    python train_sft.py config/finetune_blimp.py --device=mps --compile=False
+    python train_sft.py config/finetune_cbt.py --pretrain_dir=out-babylm-s1 --manual_seed=1
 """
 
 import os
@@ -14,11 +15,13 @@ import time
 import math
 import pickle
 import json
+import hashlib
 import datetime
 from contextlib import nullcontext
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.distributed import init_process_group, destroy_process_group
 
@@ -26,8 +29,8 @@ from model import GPTConfig, GPT
 
 # -----------------------------------------------------------------------------
 # default config — fine-tuning specific
-out_dir      = 'out-blimp-sft'
-pretrain_dir = 'out-babylm'        # load pretrained weights from here
+out_dir      = 'out-sft'
+pretrain_dir = 'out-babylm'
 eval_interval = 100
 log_interval  = 10
 eval_iters    = 50
@@ -35,11 +38,13 @@ eval_only     = False
 always_save_checkpoint = True
 init_from = 'finetune'             # 'finetune' | 'resume' | 'scratch'
 # wandb
-wandb_log     = False
-wandb_project = 'blimp-sft'
-wandb_run_name = 'sft-baseline'
-# data
-dataset     = 'blimp'
+wandb_log      = False
+wandb_project  = 'sft'
+wandb_run_name = 'sft-run'
+# data — dataset-agnostic
+sft_dataset        = 'blimp'         # registry key → sft_datasets/
+sft_data_dir       = 'data/blimp'    # path to preprocessed data
+sft_loss_mask_mode = 'all_tokens'    # 'all_tokens' | 'answer_only' (documentation only)
 gradient_accumulation_steps = 1
 batch_size  = 16
 block_size  = 128
@@ -50,24 +55,25 @@ n_embd   = 384
 dropout  = 0.1
 bias     = False
 # adamw — lower LR for fine-tuning
-learning_rate = 1e-4
+learning_rate = 1e-5
 max_iters     = 1000
 weight_decay  = 1e-1
 beta1 = 0.9
 beta2 = 0.95
 grad_clip = 1.0
 # lr decay
-decay_lr      = True
-warmup_iters  = 50
+decay_lr       = True
+warmup_iters   = 50
 lr_decay_iters = 1000
-min_lr        = 1e-5
+min_lr         = 1e-6
 # DDP
 backend = 'nccl'
 # system
 device  = 'cuda'
 dtype   = 'bfloat16' if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else ('float16' if torch.cuda.is_available() else 'float32')
 compile = True
-manual_seed = 1337
+manual_seed  = 1337
+debug_masking = False   # print one batch's mask for verification, then exit
 # -----------------------------------------------------------------------------
 config_keys = [k for k,v in globals().items() if not k.startswith('_') and isinstance(v, (int, float, bool, str))]
 exec(open('configurator.py').read())
@@ -103,24 +109,16 @@ device_type = 'cuda' if 'cuda' in device else ('mps' if 'mps' in device else 'cp
 ptdtype = {'float32': torch.float32, 'bfloat16': torch.bfloat16, 'float16': torch.float16}[dtype]
 ctx = nullcontext() if device_type in ('cpu', 'mps') else torch.amp.autocast(device_type=device_type, dtype=ptdtype)
 
-data_dir = os.path.join('data', dataset)
-
-def get_batch(split):
-    data = np.memmap(os.path.join(data_dir, 'train.bin' if split == 'train' else 'val.bin'),
-                     dtype=np.uint16, mode='r')
-    ix = torch.randint(len(data) - block_size, (batch_size,))
-    x = torch.stack([torch.from_numpy((data[i:i+block_size]).astype(np.int64)) for i in ix])
-    y = torch.stack([torch.from_numpy((data[i+1:i+1+block_size]).astype(np.int64)) for i in ix])
-    if device_type == 'cuda':
-        x, y = x.pin_memory().to(device, non_blocking=True), y.pin_memory().to(device, non_blocking=True)
-    else:
-        x, y = x.to(device), y.to(device)
-    return x, y
+# Dataset registry — returns a get_batch(split) -> (X, Y, mask) closure
+import sft_datasets
+get_batch = sft_datasets.get_batch_factory(sft_dataset)(
+    sft_data_dir, block_size, batch_size, device, device_type
+)
 
 iter_num      = 0
 best_val_loss = 1e9
 
-meta_path = os.path.join(data_dir, 'meta.pkl')
+meta_path = os.path.join(sft_data_dir, 'meta.pkl')
 if os.path.exists(meta_path):
     with open(meta_path, 'rb') as f:
         meta = pickle.load(f)
@@ -173,6 +171,16 @@ if ddp:
     model = DDP(model, device_ids=[ddp_local_rank])
 
 
+def masked_ce_loss(logits, targets, mask):
+    """Cross-entropy averaged over positions where mask==1."""
+    B, T, C = logits.shape
+    loss_per_pos = F.cross_entropy(
+        logits.view(B * T, C), targets.view(B * T), reduction='none'
+    ).view(B, T)
+    n_active = mask.sum().clamp(min=1)
+    return (loss_per_pos * mask).sum() / n_active
+
+
 @torch.no_grad()
 def estimate_loss():
     out = {}
@@ -180,10 +188,10 @@ def estimate_loss():
     for split in ['train', 'val']:
         losses = torch.zeros(eval_iters)
         for k in range(eval_iters):
-            X, Y = get_batch(split)
+            X, Y, mask = get_batch(split)
             with ctx:
-                logits, loss = model(X, Y)
-            losses[k] = loss.item()
+                logits, _ = model(X, Y)
+            losses[k] = masked_ce_loss(logits, Y, mask).item()
         out[split] = losses.mean()
     model.train()
     return out
@@ -204,7 +212,28 @@ if wandb_log and master_process:
     import wandb
     wandb.init(project=wandb_project, name=wandb_run_name, config=config)
 
-X, Y = get_batch('train')
+X, Y, mask = get_batch('train')
+
+# ------------------------------------------------------------------
+# Debug masking: print first batch and verify mask, then exit
+# ------------------------------------------------------------------
+if debug_masking and master_process:
+    import tiktoken
+    enc = tiktoken.get_encoding("gpt2")
+    print("\n=== DEBUG MASKING (first batch, first example) ===")
+    print(f"sft_dataset: {sft_dataset}, sft_loss_mask_mode: {sft_loss_mask_mode}")
+    x0 = X[0].cpu().tolist()
+    y0 = Y[0].cpu().tolist()
+    m0 = mask[0].cpu().tolist()
+    masked_positions = [i for i, v in enumerate(m0) if v == 1.0]
+    print(f"  mask==1 at positions: {masked_positions}")
+    print(f"  tokens at those positions (from y): "
+          f"{[enc.decode([y0[i]]) for i in masked_positions]}")
+    print(f"  mask sum: {int(sum(m0))} / {len(m0)}")
+    print("=== END DEBUG ===\n")
+    import sys; sys.exit(0)
+# ------------------------------------------------------------------
+
 t0 = time.time()
 local_iter_num = 0
 raw_model   = model.module if ddp else model
@@ -245,9 +274,9 @@ while True:
         if ddp:
             model.require_backward_grad_sync = (micro_step == gradient_accumulation_steps - 1)
         with ctx:
-            logits, loss = model(X, Y)
-            loss = loss / gradient_accumulation_steps
-        X, Y = get_batch('train')
+            logits, _ = model(X, Y)
+            loss = masked_ce_loss(logits, Y, mask) / gradient_accumulation_steps
+        X, Y, mask = get_batch('train')
         scaler.scale(loss).backward()
 
     if grad_clip != 0.0:

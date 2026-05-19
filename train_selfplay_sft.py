@@ -1,13 +1,14 @@
 """
-Self-play Supervised Fine-Tuning (SFT) for nanoGPT.
+Self-play Supervised Fine-Tuning (SFT) — dataset-agnostic.
 
-Identical to train_sft.py but weights per-position losses by how much the
-current model underperforms its frozen opponent (a snapshot from N iters ago).
-Positions where the model still struggles relative to its past self receive
-more gradient signal — an automatic curriculum over linguistic difficulty.
+Weights per-position losses by how much the current model underperforms its
+frozen opponent.  Self-play reweighting (eq. 3 in the paper) is applied ONLY
+to positions where loss_mask==1: the opponent loss is also masked so that easy
+non-answer positions do not dominate the weighting.
 
 Usage:
-    python train_selfplay_sft.py config/finetune_selfplay_blimp.py
+    python train_selfplay_sft.py config/finetune_selfplay_cbt.py \\
+        --pretrain_dir=out-babylm-s1 --manual_seed=1
 """
 
 import os
@@ -16,6 +17,7 @@ import time
 import math
 import pickle
 import json
+import hashlib
 import datetime
 from contextlib import nullcontext
 
@@ -29,7 +31,7 @@ from model import GPTConfig, GPT
 
 # -----------------------------------------------------------------------------
 # default config
-out_dir      = 'out-blimp-selfplay-sft'
+out_dir      = 'out-selfplay-sft'
 pretrain_dir = 'out-babylm'
 eval_interval = 100
 log_interval  = 10
@@ -39,10 +41,12 @@ always_save_checkpoint = True
 init_from = 'finetune'
 # wandb
 wandb_log      = False
-wandb_project  = 'blimp-sft'
-wandb_run_name = 'sft-selfplay'
-# data
-dataset     = 'blimp'
+wandb_project  = 'sft'
+wandb_run_name = 'selfplay-sft-run'
+# data — dataset-agnostic
+sft_dataset        = 'blimp'
+sft_data_dir       = 'data/blimp'
+sft_loss_mask_mode = 'all_tokens'
 gradient_accumulation_steps = 1
 batch_size  = 16
 block_size  = 128
@@ -53,7 +57,7 @@ n_embd   = 384
 dropout  = 0.1
 bias     = False
 # adamw
-learning_rate = 1e-4
+learning_rate = 1e-5
 max_iters     = 1000
 weight_decay  = 1e-1
 beta1 = 0.9
@@ -63,17 +67,18 @@ grad_clip = 1.0
 decay_lr       = True
 warmup_iters   = 50
 lr_decay_iters = 1000
-min_lr         = 1e-5
+min_lr         = 1e-6
 # DDP
 backend = 'nccl'
 # system
 device  = 'cuda'
 dtype   = 'bfloat16' if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else ('float16' if torch.cuda.is_available() else 'float32')
 compile = True
-manual_seed = 1337
+manual_seed  = 1337
+debug_masking = False   # print one batch's weights for verification, then exit
 # self-play
-opponent_update_interval = 50
-selfplay_lambda          = 0.5
+opponent_update_interval = 50   # K in the paper
+selfplay_lambda          = 0.5  # λ in eq. (3)
 # -----------------------------------------------------------------------------
 config_keys = [k for k,v in globals().items() if not k.startswith('_') and isinstance(v, (int, float, bool, str))]
 exec(open('configurator.py').read())
@@ -109,24 +114,15 @@ device_type = 'cuda' if 'cuda' in device else ('mps' if 'mps' in device else 'cp
 ptdtype = {'float32': torch.float32, 'bfloat16': torch.bfloat16, 'float16': torch.float16}[dtype]
 ctx = nullcontext() if device_type in ('cpu', 'mps') else torch.amp.autocast(device_type=device_type, dtype=ptdtype)
 
-data_dir = os.path.join('data', dataset)
-
-def get_batch(split):
-    data = np.memmap(os.path.join(data_dir, 'train.bin' if split == 'train' else 'val.bin'),
-                     dtype=np.uint16, mode='r')
-    ix = torch.randint(len(data) - block_size, (batch_size,))
-    x = torch.stack([torch.from_numpy((data[i:i+block_size]).astype(np.int64)) for i in ix])
-    y = torch.stack([torch.from_numpy((data[i+1:i+1+block_size]).astype(np.int64)) for i in ix])
-    if device_type == 'cuda':
-        x, y = x.pin_memory().to(device, non_blocking=True), y.pin_memory().to(device, non_blocking=True)
-    else:
-        x, y = x.to(device), y.to(device)
-    return x, y
+import sft_datasets
+get_batch = sft_datasets.get_batch_factory(sft_dataset)(
+    sft_data_dir, block_size, batch_size, device, device_type
+)
 
 iter_num      = 0
 best_val_loss = 1e9
 
-meta_path = os.path.join(data_dir, 'meta.pkl')
+meta_path = os.path.join(sft_data_dir, 'meta.pkl')
 if os.path.exists(meta_path):
     with open(meta_path, 'rb') as f:
         meta = pickle.load(f)
@@ -164,12 +160,13 @@ if block_size < model.config.block_size:
     model_args['block_size'] = block_size
 model.to(device)
 
-# opponent: frozen snapshot of the model, periodically synced
+# Opponent: frozen snapshot of the model, periodically re-synced.
+# Initialised from the same pretrained checkpoint as the learner.
 model_opponent = copy.deepcopy(model)
 model_opponent.eval()
 for p in model_opponent.parameters():
     p.requires_grad = False
-print(f"Self-play SFT: opponent updates every {opponent_update_interval} iters, λ={selfplay_lambda}")
+print(f"Self-play SFT: opponent syncs every {opponent_update_interval} iters, λ={selfplay_lambda}")
 
 scaler    = torch.amp.GradScaler('cuda', enabled=(dtype == 'float16'))
 optimizer = model.configure_optimizers(weight_decay, learning_rate, (beta1, beta2), device_type)
@@ -186,6 +183,46 @@ if ddp:
     model = DDP(model, device_ids=[ddp_local_rank])
 
 
+def masked_ce_loss(logits, targets, mask):
+    """Standard CE loss averaged over masked positions."""
+    B, T, C = logits.shape
+    loss_per_pos = F.cross_entropy(
+        logits.view(B * T, C), targets.view(B * T), reduction='none'
+    ).view(B, T)
+    n_active = mask.sum().clamp(min=1)
+    return (loss_per_pos * mask).sum() / n_active
+
+
+def masked_selfplay_loss(logits, logits_opp, targets, mask):
+    """
+    Self-play weighted loss (eq. 3), restricted to mask==1 positions.
+
+    weights[i] = sigmoid(loss_model[i] - loss_opp[i]) * mask[i]
+    Normalised so mean weight over active positions = 1.
+    Non-masked positions contribute 0 to both weight and loss.
+    """
+    B, T, C = logits.shape
+    loss_per_pos = F.cross_entropy(
+        logits.view(B * T, C), targets.view(B * T), reduction='none'
+    ).view(B, T)
+    loss_per_pos_opp = F.cross_entropy(
+        logits_opp.view(B * T, C), targets.view(B * T), reduction='none'
+    ).view(B, T)
+
+    n_active = mask.sum().clamp(min=1)
+    loss_standard = (loss_per_pos * mask).sum() / n_active
+
+    # Compute weights only at masked positions; zero out the rest.
+    delta   = loss_per_pos.detach() - loss_per_pos_opp   # (B, T)
+    weights = torch.sigmoid(delta) * mask                 # 0 at non-masked positions
+    mean_w  = weights.sum() / n_active                    # mean over active positions
+    weights = weights / (mean_w + 1e-8)                   # normalise → mean≈1 over active
+
+    loss_selfplay = (weights * loss_per_pos * mask).sum() / n_active
+    return (1.0 - selfplay_lambda) * loss_standard + selfplay_lambda * loss_selfplay, \
+           weights.detach()
+
+
 @torch.no_grad()
 def estimate_loss():
     out = {}
@@ -193,10 +230,10 @@ def estimate_loss():
     for split in ['train', 'val']:
         losses = torch.zeros(eval_iters)
         for k in range(eval_iters):
-            X, Y = get_batch(split)
+            X, Y, mask = get_batch(split)
             with ctx:
-                logits, loss = model(X, Y)
-            losses[k] = loss.item()
+                logits, _ = model(X, Y)
+            losses[k] = masked_ce_loss(logits, Y, mask).item()
         out[split] = losses.mean()
     model.train()
     return out
@@ -217,7 +254,40 @@ if wandb_log and master_process:
     import wandb
     wandb.init(project=wandb_project, name=wandb_run_name, config=config)
 
-X, Y = get_batch('train')
+X, Y, mask = get_batch('train')
+
+# ------------------------------------------------------------------
+# Debug masking: print per-position weights for first batch, then exit.
+# Confirms that weights are nonzero only where mask==1.
+# ------------------------------------------------------------------
+if debug_masking and master_process:
+    import tiktoken
+    enc = tiktoken.get_encoding("gpt2")
+    model.eval()
+    model_opponent.eval()
+    with ctx:
+        logits, _ = model(X, Y)
+    with torch.no_grad():
+        logits_opp, _ = model_opponent(X, Y)
+    B, T, C = logits.shape
+    loss_pp = F.cross_entropy(logits.view(B*T,C), Y.view(B*T), reduction='none').view(B,T)
+    loss_pp_opp = F.cross_entropy(logits_opp.view(B*T,C), Y.view(B*T), reduction='none').view(B,T)
+    weights = torch.sigmoid(loss_pp.detach() - loss_pp_opp) * mask
+    print("\n=== DEBUG MASKING — SP-SFT (first example in batch) ===")
+    m0 = mask[0].cpu().tolist()
+    w0 = weights[0].cpu().tolist()
+    masked_pos  = [i for i,v in enumerate(m0) if v == 1.0]
+    unmasked_pos = [i for i,v in enumerate(m0) if v == 0.0]
+    print(f"  mask==1 positions  : {masked_pos}")
+    print(f"  weights at mask==1 : {[round(w0[i],4) for i in masked_pos]}")
+    nonzero_at_unmasked = [w0[i] for i in unmasked_pos if w0[i] != 0.0]
+    print(f"  nonzero weights at mask==0: {nonzero_at_unmasked}  (should be empty)")
+    assert not nonzero_at_unmasked, "FAIL: weights nonzero at non-masked positions!"
+    print("  PASS: weights are zero at all non-masked positions.")
+    print("=== END DEBUG ===\n")
+    import sys; sys.exit(0)
+# ------------------------------------------------------------------
+
 t0 = time.time()
 local_iter_num = 0
 raw_model   = model.module if ddp else model
@@ -259,29 +329,14 @@ while True:
             model.require_backward_grad_sync = (micro_step == gradient_accumulation_steps - 1)
 
         with ctx:
-            logits, loss_standard = model(X, Y)
-
-        # --- self-play loss ---
-        B, T, C = logits.shape
-        loss_per_pos = F.cross_entropy(
-            logits.view(B * T, C), Y.view(B * T), reduction='none'
-        ).view(B, T)
+            logits, _ = model(X, Y)
 
         with torch.no_grad():
             logits_opp, _ = model_opponent(X, Y)
-        loss_per_pos_opp = F.cross_entropy(
-            logits_opp.view(B * T, C), Y.view(B * T), reduction='none'
-        ).view(B, T)
 
-        weights = torch.sigmoid(loss_per_pos.detach() - loss_per_pos_opp)
-        weights = weights / (weights.mean() + 1e-8)
-
-        loss_selfplay = (weights * loss_per_pos).mean()
-        loss = (1.0 - selfplay_lambda) * loss_standard + selfplay_lambda * loss_selfplay
-        # ----------------------
-
+        loss, _ = masked_selfplay_loss(logits, logits_opp, Y, mask)
         loss = loss / gradient_accumulation_steps
-        X, Y = get_batch('train')
+        X, Y, mask = get_batch('train')
         scaler.scale(loss).backward()
 
     if grad_clip != 0.0:
@@ -293,6 +348,7 @@ while True:
     scaler.update()
     optimizer.zero_grad(set_to_none=True)
 
+    # Periodically sync opponent weights from the learner
     if iter_num > 0 and iter_num % opponent_update_interval == 0:
         sd = {k.replace('_orig_mod.', ''): v for k, v in raw_model.state_dict().items()}
         model_opponent.load_state_dict(sd)
