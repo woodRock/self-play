@@ -91,7 +91,8 @@ def wait(task_id, label=''):
 
 def load_loss_log(out_dir):
     """
-    Read {out_dir}/loss_log.jsonl and return:
+    Read {out_dir}/loss_log.jsonl and return data from the last run only.
+    Detects run boundaries by finding where the iteration counter resets.
         train_iters, train_losses, val_iters, val_train_losses, val_losses
     """
     path = os.path.join(out_dir, 'loss_log.jsonl')
@@ -99,22 +100,35 @@ def load_loss_log(out_dir):
         print(f"WARNING: no loss log found at {path}")
         return [], [], [], [], []
 
-    train_iters, train_losses = [], []
-    val_iters, val_train_losses, val_losses = [], [], []
-
+    entries = []
     with open(path) as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
-            entry = json.loads(line)
-            if entry['type'] == 'train':
-                train_iters.append(entry['iter'])
-                train_losses.append(entry['loss'])
-            elif entry['type'] == 'val':
-                val_iters.append(entry['iter'])
-                val_train_losses.append(entry['train_loss'])
-                val_losses.append(entry['val_loss'])
+            entries.append(json.loads(line))
+
+    # find the last run by detecting where iter resets (strictly backwards)
+    last_run_start = 0
+    prev_iter = -1
+    for i, entry in enumerate(entries):
+        if entry['iter'] < prev_iter:
+            last_run_start = i
+        prev_iter = entry['iter']
+
+    entries = entries[last_run_start:]
+
+    train_iters, train_losses = [], []
+    val_iters, val_train_losses, val_losses = [], [], []
+
+    for entry in entries:
+        if entry['type'] == 'train':
+            train_iters.append(entry['iter'])
+            train_losses.append(entry['loss'])
+        elif entry['type'] == 'val':
+            val_iters.append(entry['iter'])
+            val_train_losses.append(entry['train_loss'])
+            val_losses.append(entry['val_loss'])
 
     return train_iters, train_losses, val_iters, val_train_losses, val_losses
 
