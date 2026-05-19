@@ -20,6 +20,8 @@ import json
 import sys
 import time
 
+import numpy as np
+
 import matplotlib
 matplotlib.use('Agg')   # no display needed on cluster
 import matplotlib.pyplot as plt
@@ -143,30 +145,82 @@ def plot_loss_curves(baseline_dir, selfplay_dir, output_file):
     bl_ti, bl_tl, bl_vi, bl_vtl, bl_vl = bl
     sp_ti, sp_tl, sp_vi, sp_vtl, sp_vl = sp
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 5))
     fig.suptitle('Baseline vs Self-Play: BabyLM BPE Training', fontsize=14)
 
-    # --- Training loss ---
+    BL_COLOR = 'steelblue'
+    SP_COLOR = 'darkorange'
+
+    def _smooth(values, window=50):
+        if len(values) < window:
+            return values
+        kernel = np.ones(window) / window
+        return np.convolve(values, kernel, mode='valid')
+
+    # --- Training loss: raw faint + smoothed bold ---
     if bl_ti:
-        ax1.plot(bl_ti, bl_tl, color='steelblue',  alpha=0.7, linewidth=0.8, label='Baseline train')
+        ax1.plot(bl_ti, bl_tl, color=BL_COLOR, alpha=0.15, linewidth=0.5)
+        s = _smooth(bl_tl)
+        ax1.plot(bl_ti[len(bl_ti)-len(s):], s, color=BL_COLOR, linewidth=2,
+                 label='Baseline train')
     if sp_ti:
-        ax1.plot(sp_ti, sp_tl, color='darkorange', alpha=0.7, linewidth=0.8, label='Self-play train')
+        ax1.plot(sp_ti, sp_tl, color=SP_COLOR, alpha=0.15, linewidth=0.5)
+        s = _smooth(sp_tl)
+        ax1.plot(sp_ti[len(sp_ti)-len(s):], s, color=SP_COLOR, linewidth=2,
+                 label='Self-play train')
     ax1.set_xlabel('Iteration')
     ax1.set_ylabel('Loss')
-    ax1.set_title('Training Loss')
+    ax1.set_title('Training Loss (smoothed)')
+    ax1.set_ylim(bottom=3.5, top=7.0)
     ax1.legend()
     ax1.grid(True, alpha=0.3)
 
-    # --- Validation loss ---
-    if bl_vi:
-        ax2.plot(bl_vi, bl_vl, color='steelblue',  marker='o', markersize=4, linewidth=1.5, label='Baseline val')
-    if sp_vi:
-        ax2.plot(sp_vi, sp_vl, color='darkorange', marker='s', markersize=4, linewidth=1.5, label='Self-play val')
+    # --- Validation loss: full run ---
+    def _skip_zero(iters, losses):
+        pairs = [(i, l) for i, l in zip(iters, losses) if i > 0]
+        return ([p[0] for p in pairs], [p[1] for p in pairs]) if pairs else (iters, losses)
+
+    bl_vi2, bl_vl2 = _skip_zero(bl_vi, bl_vl)
+    sp_vi2, sp_vl2 = _skip_zero(sp_vi, sp_vl)
+
+    if bl_vi2:
+        ax2.plot(bl_vi2, bl_vl2, color=BL_COLOR, linewidth=2, label='Baseline val')
+    if sp_vi2:
+        ax2.plot(sp_vi2, sp_vl2, color=SP_COLOR, linewidth=2,
+                 linestyle='--', label='Self-play val')
     ax2.set_xlabel('Iteration')
     ax2.set_ylabel('Loss')
     ax2.set_title('Validation Loss')
     ax2.legend()
     ax2.grid(True, alpha=0.3)
+
+    # --- Validation loss: zoomed final 25% ---
+    if bl_vi2 or sp_vi2:
+        all_iters = bl_vi2 + sp_vi2
+        zoom_start = max(all_iters) * 0.75 if all_iters else 0
+        bl_vz = [(i, l) for i, l in zip(bl_vi2, bl_vl2) if i >= zoom_start]
+        sp_vz = [(i, l) for i, l in zip(sp_vi2, sp_vl2) if i >= zoom_start]
+        if bl_vz:
+            ax3.plot([p[0] for p in bl_vz], [p[1] for p in bl_vz],
+                     color=BL_COLOR, linewidth=2, marker='o', markersize=4, label='Baseline val')
+        if sp_vz:
+            ax3.plot([p[0] for p in sp_vz], [p[1] for p in sp_vz],
+                     color=SP_COLOR, linewidth=2, marker='s', markersize=4,
+                     linestyle='--', label='Self-play val')
+        # annotate final values
+        if bl_vz:
+            ax3.annotate(f"{bl_vz[-1][1]:.4f}", xy=bl_vz[-1],
+                         xytext=(8, 4), textcoords='offset points',
+                         color=BL_COLOR, fontsize=9, fontweight='bold')
+        if sp_vz:
+            ax3.annotate(f"{sp_vz[-1][1]:.4f}", xy=sp_vz[-1],
+                         xytext=(8, -12), textcoords='offset points',
+                         color=SP_COLOR, fontsize=9, fontweight='bold')
+    ax3.set_xlabel('Iteration')
+    ax3.set_ylabel('Loss')
+    ax3.set_title('Validation Loss (final 25%)')
+    ax3.legend()
+    ax3.grid(True, alpha=0.3)
 
     plt.tight_layout()
     plt.savefig(output_file, dpi=150)
