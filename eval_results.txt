@@ -1,0 +1,53 @@
+# task 4: python3 eval.py --baseline_dir=out-babylm --selfplay_dir=out-babylm-selfplay --eval_iters=200 --device=cuda
+# server: cuda14  CUDA_VISIBLE_DEVICES: 2
+# started: 2026-05-20T00:21:37.048050
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm  (iter 5000)
+  Self-play : out-babylm-selfplay  (iter 5000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  4.2037     66.9328
+  Self-play                 4.2070     67.1535
+  Δ (SP − BL)              ▲0.0033     ▲0.2206
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               28.32%   32.25%    0.72%
+  Self-play              28.23%   32.15%    0.74%
+  Δ (SP − BL)            -0.08%   -0.10%   +0.01%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.01% vs common chars by -0.10%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm]
+
+.<|endoftext|>Yeah, but  they have we   so   in that  <|endoftext|>You<|endoftext|>Yes <|endoftext|>I mean we'll just have to <|endoftext|>Well I'll have to  I'd have to do that <|endoftext|>We've been able to <|endoftext|>that's not an early time of er, I would like to, I mean, it's just like to take the  <|endoftext|>Was that  <|endoftext|>I mean you've got a call up in a right order.<|endoftext|>You don't like  <|endoftext|>Oh I don't think<|endoftext|>What I said more oh no.<|endoftext|>I used to  this!<|endoftext|>I mean I mean I had this <|endoftext|>No it's the <|endoftext|>I don't think I mean<|endoftext|>I didn't know that at the next week.<|endoftext|>for the <|endoftext|>Well they said in this lot of them, it's really like, yeah<|endoftext|>I mean, it's the only one<|endoftext|>Yeah.<|endoftext|>I don't think they're there was <|endoftext|>Yeah.<|endoftext|>Yeah.<|endoftext|>right.<|endoftext|>Do you think.<|endoftext|>That's right.<|endoftext|>It's interesting.<|endoftext|>Yeah.<|endoftext|>Cos you say, you know, I think that was a matter.<|endoftext|>And  and I don't want to  in quite a lot of things like, I mean very interesting about what<|endoftext|>Okay, I bet that's the first thing that's the only one.<|endoftext|>It's a nice thing that is, I'm gonna give you a little bit of time for a way to say.<|endoftext|>Oh, it's like no other thing.<|endoftext|>We just do have a lot of time.<|endoftext|>I'm looking at some kind of time.<|endoftext|>I I'm just getting that <|endoftext|>I like with a lot.<|endoftext|>I'm not gonna do that.<|endoftext|>Well I'll be gonna be on when I tell you the second.<|endoftext|>Yeah.<|endoftext|>So, I know, I'm thinking about that as long as soon as long as I'm
+
+[Self-play — out-babylm-selfplay]
+
+.<|endoftext|>Yeah, but I'm sorry we're gonna call you all the way.<|endoftext|>Oh, yeah, that's what you're doing here?<|endoftext|>I'll do this afternoon.<|endoftext|>I'm still happy.<|endoftext|>But I'm afraid of you.<|endoftext|>Well, uh, I don't know.<|endoftext|>And I'm the first man I'm not a bad man, but I'll have to actually get a lawyer.<|endoftext|>I'm a lot better with you.<|endoftext|>But I'll tell you we'll make a party.<|endoftext|>Oh, well,<|endoftext|>I think I know more.<|endoftext|>I'll be happy.<|endoftext|>Oh!<|endoftext|>I'm sorry for him.<|endoftext|>I think we're gonna be proud to stop it now.<|endoftext|>That's, uh, I'll go.<|endoftext|>I see how to see you in.<|endoftext|>- You can take a friend, uh, you know, I don't think, you gotta get out.<|endoftext|>I haven't seen a lot.<|endoftext|>- For me, I's not, I'm just telling us that.<|endoftext|>I'm sure of this was your time, uh, you know, you just don't say, you know, I'm a boy.<|endoftext|>I'll never, uh, that kind of, the boy knows of thing, you don't want to talk to me,<|endoftext|>Okay,<|endoftext|>and,<|endoftext|>and, I'll be up with you.<|endoftext|>And though I could get my ass up on a long,<|endoftext|>Oh,<|endoftext|>Oh, yeah,<|endoftext|>yeah,<|endoftext|>it's,<|endoftext|>Yeah.<|endoftext|>It's,<|endoftext|>it was,<|endoftext|>what,<|endoftext|>you don't have to do it.<|endoftext|>Yeah.<|endoftext|>and, I don't know.<|endoftext|>I mean, they,<|endoftext|>But<|endoftext|>I, you know, I think I've ever been with, I've,<|endoftext|>Uh-huh.<|endoftext|>and, uh, uh, you know, you're having a little enough time to see, you know,
+════════════════════════════════════════════════════════════
+
