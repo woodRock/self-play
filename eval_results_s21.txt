@@ -1,0 +1,53 @@
+# task 84: python3 eval.py --baseline_dir=out-babylm-s21 --selfplay_dir=out-babylm-selfplay-s21 --eval_iters=200 --device=cuda
+# server: cuda20  CUDA_VISIBLE_DEVICES: 3
+# started: 2026-05-20T04:06:23.381051
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s21
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s21
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s21  (iter 20000)
+  Self-play : out-babylm-selfplay-s21  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8563     47.2887
+  Self-play                 3.8518     47.0759
+  Δ (SP − BL)            ▼0.0045 ✓   ▼0.2129 ✓
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.88%   35.86%    3.98%
+  Self-play              31.97%   35.91%    4.35%
+  Δ (SP − BL)            +0.09%   +0.05%   +0.37%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.37% vs common chars by +0.05%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s21]
+
+ is sometimes called the "c". <|endoftext|>The main name is called the "cove".<|endoftext|>The "cunri" is called the "gunri" or "cunri". It is the name for "cunri". It is also called "gai" (an animal and "gunri" or "gonra" or "gor" (estunri). <|endoftext|>The word "cunri" is called "vār". Many local people speak spoken in almost all languages.<|endoftext|>It is believed to have always been a kind in the shape of an "cou" in the "scar" and "k". For example, some people speak it only.<|endoftext|>The word "cou" (also called "couoon"). They have different words: the term "cou" is used for "bou" in English.<|endoftext|>A "cou" means "cou" in "cou" (or "cou"). "cou" means "cou" in "cou"" (douy"). The word "coue" is "cou" in "cou".<|endoftext|>Bou<|endoftext|>Bou is a kind of food or a name of food, usually in many ways. The eggs live on the same means. In kou is a family that is used to grow food. People like to be a family. Most people use their milk, of or of their food.<|endoftext|>The wings can be made of more food.<|endoftext|>Lou may mean "goui" in the eggs. They go to animals or die. They are made of snow in the water. They may also have a little with water in the skin.<|endoftext|>The rest of the earth are but many of them also. They have many birds. They have a lot of plants, such as animals and animals, such as animals, as animals, birds, and animals. They
+
+[Self-play — out-babylm-selfplay-s21]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm not in that position.<|endoftext|>You should be in trouble.<|endoftext|>I'm under control!<|endoftext|>Please, tell me you're coming home.<|endoftext|>I'm gonna miss you.<|endoftext|>That's right.<|endoftext|>You're going to have to meet me at work!<|endoftext|>I'm gonna meet you later.<|endoftext|>Okay, I'll tell you.<|endoftext|>I'll tell you.<|endoftext|>Is that the name of me?<|endoftext|>I'll tell you.<|endoftext|>We'll call you after I call you in.<|endoftext|>What?<|endoftext|>What is it?<|endoftext|>I don't know.<|endoftext|>Fantastic.<|endoftext|>It's taken away from the last story, though.<|endoftext|>It's you, dear.<|endoftext|>You have a phone at work?<|endoftext|>I'm still talking to her.<|endoftext|>- You can't tell them.<|endoftext|>- I'm thinking she's looking for a phone phone.<|endoftext|>-<|endoftext|>- You can't tell her.<|endoftext|>- She was looking for a car accident.<|endoftext|>- Look at that.<|endoftext|>That's what happened.<|endoftext|>It was just an accident.<|endoftext|>You had this for a child, son.<|endoftext|>Did you hear what happened?<|endoftext|>What happened?<|endoftext|>What happened?<|endoftext|>You were in here.<|endoftext|>You didn't know much about it, son.<|endoftext|>Okay, I bet you didn't understand.<|endoftext|>What's wrong with you?<|endoftext|>I don't know.<|endoftext|>I don't know.<|endoftext|>- What about you?<|endoftext|>- Don't say anything.<|endoftext|>I know what happened.<|endoftext|>You said you were gonna do it.<|endoftext|>First time I go out to the hotel.<|endoftext|>What? <|endoftext|>I I don't know.<|endoftext|>- You know what?<|endoftext|>What about me?<|endoftext|>You know what?<|endoftext|>Well, why don't you go out there for a while?<|endoftext|>- I've, uh...<|endoftext|>- I'm trying to think we should do it.<|endoftext|>You're...<|endoftext|>
+════════════════════════════════════════════════════════════
+

@@ -1,0 +1,52 @@
+# task 82: python3 eval.py --baseline_dir=out-babylm-s19 --selfplay_dir=out-babylm-selfplay-s19 --eval_iters=200 --device=cuda
+# server: cuda14  CUDA_VISIBLE_DEVICES: 2
+# started: 2026-05-20T04:06:23.332292
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s19
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s19
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s19  (iter 20000)
+  Self-play : out-babylm-selfplay-s19  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8629     47.6027
+  Self-play                 3.8609     47.5065
+  Δ (SP − BL)            ▼0.0020 ✓   ▼0.0962 ✓
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.82%   35.79%    3.94%
+  Self-play              31.76%   35.73%    3.93%
+  Δ (SP − BL)            -0.06%   -0.06%   -0.02%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Baseline is better on rare chars by 0.02%. Self-play may need more iterations.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s19]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm not in that position.<|endoftext|>You should be a real killer.<|endoftext|>I got a lot to do.<|endoftext|>Now you're coming home for two.<|endoftext|>But you're afraid of me.<|endoftext|>(HELING)<|endoftext|>You know, I didn't know what you're doing.<|endoftext|>I said she'd be weak enough to help me.<|endoftext|>I want a little more.<|endoftext|>(WHEAKING) Oh, uh, we have to wait for our fight.<|endoftext|>The first time we go to the war,<|endoftext|>I'm not gonna let it go.<|endoftext|>Fantastic.<|endoftext|>(GRUNTING)<|endoftext|>It's the captain to the head now.<|endoftext|>That's not the only way he takes.<|endoftext|>I see how he feels.<|endoftext|>He's the one who has to answer.<|endoftext|>That's right, that's why we're not gonna do this.<|endoftext|>It's not going to happen.<|endoftext|>Sara was going to be the president's case.<|endoftext|>I'm sorry. <|endoftext|>I'm sorry.<|endoftext|>I just didn't speak to my wife.<|endoftext|>It's not gonna happen, I'm sorry.<|endoftext|>You go home. <|endoftext|>I'm sorry.<|endoftext|>Okay, I know I don't know what I mean.<|endoftext|>That's nice.<|endoftext|>I bet you gonna go home.<|endoftext|>I'll go to my place, though.<|endoftext|>I've got no idea how long it's going to end.<|endoftext|>If you're gonna go to my house, it's going to be a good mess.<|endoftext|>If I had a child, I'd take care of her.<|endoftext|>What? <|endoftext|>I I'm gonna do that.<|endoftext|>I'd like to do something about this, but...<|endoftext|>I thought I'd ever quit.<|endoftext|>I'd have known the job.<|endoftext|>My wife was gonna be, uh, you know, she was going to have enough time to see us.<|endoftext|>Well
+
+[Self-play — out-babylm-selfplay-s19]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm in the hospital and I need to look at my own.<|endoftext|>I want to see an officer from the hospital.<|endoftext|>Do you have a doctor's doctor?<|endoftext|>Not very good.<|endoftext|>But it's not an accident.<|endoftext|>- I'm not.<|endoftext|>- Well, I'm not.<|endoftext|>I'm not.<|endoftext|>I don't know what you're talking about.<|endoftext|>I'm a doctor.<|endoftext|>But I am.<|endoftext|>You're my mother.<|endoftext|>Why are you telling me what I do to do?<|endoftext|>Why do you want to talk about this?<|endoftext|>I'm not related.<|endoftext|>He's an un-unable man.<|endoftext|>He's a lawyer.<|endoftext|>I'm a lawyer.<|endoftext|>I don't see how I feel.<|endoftext|>I'm the president.<|endoftext|>I'm a member.<|endoftext|>Your daughter's death.<|endoftext|>Then I gotta get out.<|endoftext|>I'm not going to give you time to say this.<|endoftext|>But you're gonna take me to the job.<|endoftext|>I'm not going to make your time.<|endoftext|>Oh, I'm sorry.<|endoftext|>It's not gonna get the job.<|endoftext|>She's not goin' to the office.<|endoftext|>You're the best man of all time.<|endoftext|>Do you want to keep her on?<|endoftext|>What's the matter with the money?<|endoftext|>What's the matter with you?<|endoftext|>I'm not going to have to talk to you.<|endoftext|>I'm gonna be a friend.<|endoftext|>I'll be right back at the office.<|endoftext|>Hey, hey.<|endoftext|>If I'm not interested in this, I'm fine.<|endoftext|>Yeah. <|endoftext|>When you have the money.<|endoftext|>I gotta go.<|endoftext|>Don't get the money, you know.<|endoftext|>You know what?<|endoftext|>I'm a doctor.<|endoftext|>What's the matter?<|endoftext|>I've, uh, got you here, and I can't tell enough about it.<|endoftext|>I...<|endoftext|>
+════════════════════════════════════════════════════════════
+

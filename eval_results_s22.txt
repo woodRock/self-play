@@ -1,0 +1,53 @@
+# task 85: python3 eval.py --baseline_dir=out-babylm-s22 --selfplay_dir=out-babylm-selfplay-s22 --eval_iters=200 --device=cuda
+# server: cuda16  CUDA_VISIBLE_DEVICES: 2
+# started: 2026-05-20T04:06:55.129837
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s22
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s22
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s22  (iter 20000)
+  Self-play : out-babylm-selfplay-s22  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8730     48.0860
+  Self-play                 3.8594     47.4368
+  Δ (SP − BL)            ▼0.0136 ✓   ▼0.6492 ✓
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.65%   35.64%    3.70%
+  Self-play              31.91%   35.88%    4.12%
+  Δ (SP − BL)            +0.26%   +0.24%   +0.42%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.42% vs common chars by +0.24%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s22]
+
+ is sometimes called the "cirreus". <|endoftext|>And I want to know if you give it to a second, or even if you have an individual, then tell me what they are, and that's what they are doing. <|endoftext|>In the next few days, they don't have the answer, but they're actually, they're not a matter of fact, I'll say they actually are a lawyer. <|endoftext|>I want to know what you are doing here, but I'm not sure if you're trying to say that there's any answer to what you're doing. <|endoftext|>So let's also talk about what we're talking about. <|endoftext|>So if we're talking about some questions about this, you're talking about, but if you're at a little more than 1, then you can go back to this. <|endoftext|>And, if you're talking about this, you're talking about the results, you're actually talking about the records and the time you say, you're a doctor, you're just talking about some of the questions. <|endoftext|>Somebody has some knowledge, so you can tell how you're saying, how you're talking about it, what you're talking about is, and how you kind of talk about it. <|endoftext|>You're talking about the budget very nearly as far as you know, you know, the, the kind of things you know about, the, the economic policies and the, the, the, the, the, the, the, the, the, the, the, the way the insurance get some information about it, and the, the, the, the thing that the, the, the government, the, the, the, the, the, the, the, the, the, the, the, the, the, the, the, the, the people that are working on, to, to, to, to, to, to make money, to make money, you know,
+
+[Self-play — out-babylm-selfplay-s22]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm not in that position.<|endoftext|>You should be in trouble.<|endoftext|>I'll just do an answer.<|endoftext|>Did you hear from coming home?<|endoftext|>I'm gonna miss you.<|endoftext|>That's right.<|endoftext|>You're going to have a good answer.<|endoftext|>Don't you wanna be dead?<|endoftext|>You know, sometimes I'll have to start talking about this.<|endoftext|>I'm done here.<|endoftext|>EIGHT.<|endoftext|>I'll tell you we're out of our house and say, well, we'll wait for a more time.<|endoftext|>I'm just gonna go and wait a minute.<|endoftext|>I'll take this.<|endoftext|>Take it easy, get it ready.<|endoftext|>You're gonna be okay with me, man.<|endoftext|>I'm gonna have to see you later.<|endoftext|>- You can take a picture.<|endoftext|>- I'm gonna leave you alone.<|endoftext|>- Will we stop?<|endoftext|>- I don't have to go to work.<|endoftext|>- What's going on?<|endoftext|>- [sighs]<|endoftext|>Sleeping this for your time, though.<|endoftext|>You ain't just for a walk, son.<|endoftext|>- [sighs] go on. <|endoftext|>Go on.<|endoftext|>- [sighs]<|endoftext|>- [sighs]<|endoftext|>- [sighs]<|endoftext|>- [sighs] - [sighs]<|endoftext|>[man] How many times have we shared before we were married or we were married?<|endoftext|>- I can't blame you.<|endoftext|>- [sighs]<|endoftext|>- [sighs] [crowds] - [coughs] - [sighs] <|endoftext|>- [mighs] [sighs]<|endoftext|>- [grunts] <|endoftext|>- [sighs] <|endoftext|>- Oh!<|endoftext|>- [coughs] - [chuckles]<|endoftext|>- [ crying] - [grunts]<|endoftext|>- [
+════════════════════════════════════════════════════════════
+

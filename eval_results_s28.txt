@@ -1,0 +1,53 @@
+# task 91: python3 eval.py --baseline_dir=out-babylm-s28 --selfplay_dir=out-babylm-selfplay-s28 --eval_iters=200 --device=cuda
+# server: cuda18  CUDA_VISIBLE_DEVICES: 0
+# started: 2026-05-20T04:07:27.083702
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s28
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s28
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s28  (iter 20000)
+  Self-play : out-babylm-selfplay-s28  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8621     47.5650
+  Self-play                 3.8604     47.4866
+  Δ (SP − BL)            ▼0.0016 ✓   ▼0.0784 ✓
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.87%   35.85%    3.94%
+  Self-play              31.92%   35.88%    4.13%
+  Δ (SP − BL)            +0.05%   +0.03%   +0.20%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.20% vs common chars by +0.03%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s28]
+
+.<|endoftext|>Yeah, but I'm in the kitchen for so soon.<|endoftext|>Yeah. <|endoftext|>You should know that.<|endoftext|>Yeah. <|endoftext|>Yeah!<|endoftext|>And, um, you know, I was pretty.<|endoftext|>But, uh, I don't know how to see me.<|endoftext|>Uh-huh.<|endoftext|>And my husband, I guess that's probably just, uh, the, uh, thing that, I'm always with you, it's kind of a big, uh, big, nice, uh,<|endoftext|>and I know, I think that's good.<|endoftext|>Yeah.<|endoftext|>Uh-huh.<|endoftext|>I think that's very important.<|endoftext|>Yeah.<|endoftext|>And,<|endoftext|>I think that's, uh, I guess that, uh, that's interesting.<|endoftext|>I see that, uh, my friend's daughter was there, I know, she's really on,<|endoftext|>uh, in, in the, uh,<|endoftext|>I haven't seen, uh, time for two years.<|endoftext|>Uh-huh.<|endoftext|>She's just a little more.<|endoftext|>That's right.<|endoftext|>It, she has, uh, just for, uh, uh, the, uh, the number of us you would, uh, try to be, the,<|endoftext|>but,<|endoftext|>I don't want to talk to her on<|endoftext|>but, I bet that's the, the kind of things that, uh, I though are nice<|endoftext|>and I don't want to talk to her or not talk to her,<|endoftext|>yeah.<|endoftext|>Um, I wish to get the other day and go back to school<|endoftext|>and, uh, I go back to school.<|endoftext|>Yeah.<|endoftext|>Uh,<|endoftext|>uh, I think that's not a problem with her.<|endoftext|>and, uh, I do kind of work but I don't care.<|endoftext|>I think that's a problem.<|endoftext|>I've, I don't know, I'm a problem with her,<|endoftext|>and that's,<|endoftext|>and
+
+[Self-play — out-babylm-selfplay-s28]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm not in that position.<|endoftext|>You should know that's what you're saying.<|endoftext|>It's not a problem, but I'm not in this.<|endoftext|>But I'm afraid of doing this without a decision.<|endoftext|>We don't know if I didn't support my husband, but you got to do it, but I'll have to actually get a lawyer.<|endoftext|>I'm a doctor.<|endoftext|>Eddie, I'm a doctor.<|endoftext|>We're all here to say.<|endoftext|>It's a problem with the best.<|endoftext|>I can't believe it.<|endoftext|>I think we're here for a medical and a doctor.<|endoftext|>I can't believe the doctor's.<|endoftext|>That's something.<|endoftext|>This man's a little nervous.<|endoftext|>He's a little bit nervous.<|endoftext|>He's a friend, and he's a grown-up man.<|endoftext|>He's the best guy in the world.<|endoftext|>That's good.<|endoftext|>He was a good man.<|endoftext|>I'm just telling us that if there's any problems of this, he's just a job guy.<|endoftext|>No, no, no, no, no, no, no, no.<|endoftext|>No, no, no, no, no, no...<|endoftext|>I think it'll be okay.<|endoftext|>That's nice, honey.<|endoftext|>That's the first time we got up with, but...<|endoftext|>I'm just a girl.<|endoftext|>Here.<|endoftext|>[Sighs]<|endoftext|>Thank you, all right.<|endoftext|>[Sighs]<|endoftext|>Hey, get some believe in me.<|endoftext|>Hey, you know, go take me some.<|endoftext|>Yeah.<|endoftext|>You have a family here, baby.<|endoftext|>–You know what?<|endoftext|>What's this, you know?<|endoftext|>You know what?<|endoftext|>I told you.<|endoftext|>I tell you.<|endoftext|>My wife's been there, and, you know, she was there.<|endoftext|>And she's got it.<|endoftext|>M
+════════════════════════════════════════════════════════════
+

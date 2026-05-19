@@ -1,0 +1,53 @@
+# task 68: python3 eval.py --baseline_dir=out-babylm-s5 --selfplay_dir=out-babylm-selfplay-s5 --eval_iters=200 --device=cuda
+# server: cuda14  CUDA_VISIBLE_DEVICES: 1
+# started: 2026-05-20T04:05:19.536992
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s5
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s5
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s5  (iter 20000)
+  Self-play : out-babylm-selfplay-s5  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8581     47.3751
+  Self-play                 3.8603     47.4815
+  Δ (SP − BL)              ▲0.0022     ▲0.1064
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.87%   35.85%    3.94%
+  Self-play              31.90%   35.86%    4.13%
+  Δ (SP − BL)            +0.03%   +0.01%   +0.19%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.19% vs common chars by +0.01%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s5]
+
+ is sometimes called the "c". If we can get so many parts of it, it can take away the number of people who work in the country. If we can tell, we can tell when a person can do it.<|endoftext|>We can see the number of different ways that we can have in the past, but we can see the numbers of people who can't do it. And it is actually called a "c" or "c" or a call. This means that when people do not do this, they can't say it. The "c" is always more like a word. If a person can do it, they can't do it. They can do it in different ways, but they can only learn more.<|endoftext|>The name "c" is called "c" in the name of a person. It was also used to answer a word. "b" means "p" in a word "b" means "b". This means "b" in a word. "b" means "c" in the word "b" or "b"" means "n" to the word "b" for".<|endoftext|>Rehom (quim)<|endoftext|>Rehom is a type of bird that is used to the bird. It is usually used for many species of birds, as bird. The word "b" is used for bird. It is used to use bird bird though the bird is similar to one part of the bird.<|endoftext|>Ranem use a lion(sen) and a bird. They use the birds for humans and birds to do things like boys. They do not have animals or do not eat them. They do not have the bird. They do not have birds with words.<|endoftext|>Ranemun<|endoftext|>Ranemun is a group of birds. They have many birds. They have a family. They have long birds, but they are often called birds. They do not have birds. They are made
+
+[Self-play — out-babylm-selfplay-s5]
+
+.<|endoftext|>Yeah, but I'm in case they were so far away in that.<|endoftext|>Oh, yeah, but, well, we're under the weight,<|endoftext|>we're, we're coming off for two.<|endoftext|>But, uh, the next three is a, uh, a, a long time ago,<|endoftext|>that's, uh, uh, a matter of fact, I'll have to actually get a few.<|endoftext|>Uh-huh.<|endoftext|>Uh, I don't want to, we don't want to,<|endoftext|>but I don't think that's what we're talking about.<|endoftext|>I don't,<|endoftext|>I think we're talking about a lot of people<|endoftext|>and it's, uh,<|endoftext|>but, you know,<|endoftext|>I think that's a serious thing that's worth of a talking about, uh, the, the lot that,<|endoftext|>yeah.<|endoftext|>Your,<|endoftext|>uh,<|endoftext|>we're talking about, uh, news about, the, the, the, the, the, uh, uh,<|endoftext|>we're talking about a lot of, uh, paper for your time, uh, the, the, uh, uh, the, the, uh, the, the, uh, uh, the, uh, the, the,<|endoftext|>Yeah<|endoftext|>uh, the, the, the, uh,<|endoftext|>Okay,<|endoftext|>and, uh, the, the current things are, uh,<|endoftext|>I'm going to take a, a hotel.<|endoftext|>I, I've got to get to the, uh, and, uh, uh, the other thing is they're just,<|endoftext|>we're interested in, go to the, the, uh, the, the first I'm gonna do is, uh, take a drive from the city, uh, the water, the, the car is going to be on the coast of France.<|endoftext|>Uh-huh,<|endoftext|>uh, you know,<|endoftext|>yeah.<|endoftext|>Yeah,<|endoftext|>the, uh, the,
+════════════════════════════════════════════════════════════
+

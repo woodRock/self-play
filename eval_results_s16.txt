@@ -1,0 +1,52 @@
+# task 79: python3 eval.py --baseline_dir=out-babylm-s16 --selfplay_dir=out-babylm-selfplay-s16 --eval_iters=200 --device=cuda
+# server: cuda15  CUDA_VISIBLE_DEVICES: 1
+# started: 2026-05-20T04:06:23.268317
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s16
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s16
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s16  (iter 20000)
+  Self-play : out-babylm-selfplay-s16  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8599     47.4584
+  Self-play                 3.8638     47.6478
+  Δ (SP − BL)              ▲0.0040     ▲0.1893
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.88%   35.83%    4.17%
+  Self-play              31.78%   35.74%    4.00%
+  Δ (SP − BL)            -0.10%   -0.09%   -0.17%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Baseline is better on rare chars by 0.17%. Self-play may need more iterations.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s16]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm not in that position.<|endoftext|>You should be in trouble.<|endoftext|>I'll just have to leave her.<|endoftext|>Now you're coming home.<|endoftext|>I'm gonna help you.<|endoftext|>That's what I'm gonna do.<|endoftext|>- I'm not gonna meet you.<|endoftext|>- I'm not gonna call you.<|endoftext|>- No, don't worry. <|endoftext|>I'm gonna let you go.<|endoftext|>- What?<|endoftext|>- No, we don't.<|endoftext|>So you're gonna have to be coming to the station.<|endoftext|>Why don't you just talk about this?<|endoftext|>I'm gonna talk about it this time.<|endoftext|>It's the last time I made the last night.<|endoftext|>I didn't know what you were doing.<|endoftext|>There was a man in the room with his mother.<|endoftext|>I thought, "I'm going to death."<|endoftext|>Then, we didn't talk about anything.<|endoftext|>I don't think they might say anything.<|endoftext|>They're not gonna talk about us.<|endoftext|>Do you think we can find this for us?<|endoftext|>- No, I don't.<|endoftext|>- I haven't.<|endoftext|>- I don't mean to go to a meeting.<|endoftext|>- We want to talk about it.<|endoftext|>- I don't want you to talk about it.<|endoftext|>- I bet you're the only one that's been written to me.<|endoftext|>I'm sorry.<|endoftext|>It's okay.<|endoftext|>It's okay.<|endoftext|>We just need to talk to you.<|endoftext|>- It's not going to come back.<|endoftext|>- I'm sorry.<|endoftext|>- But I'm sorry.<|endoftext|>- I'm not coming back.<|endoftext|>- I want to talk to you.<|endoftext|>- I'm sorry about this, John.<|endoftext|>I came to talk to you about it.<|endoftext|>I'm sorry.<|endoftext|>It's okay.<|endoftext|>- It's okay.<|endoftext|>- There was an accident.<|endoftext|>- The Captain's at the foot
+
+[Self-play — out-babylm-selfplay-s16]
+
+.<|endoftext|>Yeah, but I'm in the kitchen for so long.<|endoftext|>- Hey, you know, you know what?<|endoftext|>- Who?<|endoftext|>!<|endoftext|>- What happened?<|endoftext|>- One of my two.<|endoftext|>- Good.<|endoftext|>Not much.<|endoftext|>- But it was just an accident.<|endoftext|>- Well, what happened?<|endoftext|>- It's a matter of fact.<|endoftext|>- I don't know what happened.<|endoftext|>I heard you were the one who gave me a shirt on.<|endoftext|>You don't know what happened to me?<|endoftext|>- Yes.<|endoftext|>- Well, what kind of a mess?<|endoftext|>- You don't know? <|endoftext|>It's taken on me.<|endoftext|>- A piece of paper.<|endoftext|>- I'm not sure.<|endoftext|>- Why don't you tell me how?<|endoftext|>I don't know.<|endoftext|>I don't know.<|endoftext|>- I do, I don't think so.<|endoftext|>- Right.<|endoftext|>- You're going to give me time?<|endoftext|>- Yeah.<|endoftext|>- I'm sorry.<|endoftext|>I just couldn't call.<|endoftext|>- I was so sorry.<|endoftext|>- That was my kind.<|endoftext|>- I was just making a kiss.<|endoftext|>- Yeah.<|endoftext|>What's going on here?<|endoftext|>- It's a thought of a couple of times.<|endoftext|>- Where's the girls?<|endoftext|>- I bet it's the first time we got up.<|endoftext|>- No, this is nice.<|endoftext|>It's okay.<|endoftext|>It's okay.<|endoftext|>We just need to make sure we'll be there.<|endoftext|>- All right?<|endoftext|>- Yeah.<|endoftext|>- I think you're a good singer.<|endoftext|>- Yeah.<|endoftext|>- Thank you.<|endoftext|>- That's great.<|endoftext|>- You know what?<|endoftext|>- No, I'm...<|endoftext|>I thought I was ever a good singer.<|endoftext|>I thought I was a good singer.<|endoftext|>I mean, I was tired of doing something.<|endoftext|>- That's enough.<|endoftext|>- No...<|endoftext|>
+════════════════════════════════════════════════════════════
+

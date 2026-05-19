@@ -1,0 +1,53 @@
+# task 66: python3 eval.py --baseline_dir=out-babylm-s3 --selfplay_dir=out-babylm-selfplay-s3 --eval_iters=200 --device=cuda
+# server: cuda15  CUDA_VISIBLE_DEVICES: 1
+# started: 2026-05-20T04:05:19.493191
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s3
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s3
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s3  (iter 20000)
+  Self-play : out-babylm-selfplay-s3  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8666     47.7803
+  Self-play                 3.8646     47.6835
+  Δ (SP − BL)            ▼0.0020 ✓   ▼0.0967 ✓
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.80%   35.76%    4.01%
+  Self-play              31.85%   35.80%    4.14%
+  Δ (SP − BL)            +0.05%   +0.04%   +0.13%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.13% vs common chars by +0.04%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s3]
+
+.<|endoftext|>Yeah, but I'm in case that I'm in a couple of minutes.<|endoftext|>You should be in trouble.<|endoftext|>I'll just have to leave her.<|endoftext|>Now you can take care of her.<|endoftext|>But you're afraid of her...<|endoftext|>and you see me.<|endoftext|>Bye.<|endoftext|>Bye!<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>We'll call you sooner.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Ah.<|endoftext|>Bye. <|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Bye.<|endoftext|>Okay,<|endoftext|>Bye.<|endoftext|>Bye!<|endoftext|>Bye.<|endoftext|>Bye bye-bye.<|endoftext|>Bye.<|endoftext|>Bye bye,Bye bye.<|endoftext|>Bye<|endoftext|>Bye<|endoftext|>Bye bye.<|endoftext|>Bye time.<|endoftext|>Bye bye's .<|endoftext|>Bye bye bye bye bye bye bye bye.<|endoftext|>Bye bye bye.<|endoftext|>Bye bye bye bye bye.<|endoftext|>Bye bye bye bye bye bye bye bye bye bye bye go bye bye bye bye bye bye bye morning yeah Richardbye<|endoftext|>Bye bye bye bye bye thank you very welcome<|endoftext|>good<|endoftext|>Okay, thank you very much<|endoftext|>Thank you very much for your morning thank you very much<|endoftext|>Bye bye bye bye bye<|endoftext|>Bye bye bye bye<|endoftext|>Bye bye bye bye bye bye bye bye bye bye bye bye bye bye bye .<|endoftext|>bye bye bye bye bye bye bye bye .<|endoftext|>bye bye bye bye yes thank you bye bye bye bye bye I'mokay .<|endoftext|>bye bye bye bye bye bye bye bye bye bye bye bye bye thank you bye bye bye bye bye bye bye bye bye bye bye bye bye bye bye bye .<|endoftext|>bye bye bye bye bye ?<|endoftext|>bye bye bye bye bye bye bye bye bye bye bye bye bye
+
+[Self-play — out-babylm-selfplay-s3]
+
+.<|endoftext|>Yeah, but I'm in case they were so lucky to see that.<|endoftext|>Oh, yeah, that's good.<|endoftext|>I got a lot more news.<|endoftext|>Now, they're not going to.<|endoftext|>But they're very good here.<|endoftext|>Well, uh, they don't have any news at all.<|endoftext|>I, I, I think they're nice to meet you, don't they?<|endoftext|>One good little girl.<|endoftext|>Yeah.<|endoftext|>So, if I want to, we don't want to fight you.<|endoftext|>But you know, if I want to help, I'll be happy.<|endoftext|>Oh!<|endoftext|>I like to talk about that and <|endoftext|>No, I, I've, I only liked you for<|endoftext|>or, I, I've, you know, I've got to get one of the things that I like about,<|endoftext|>but I like, I don't think, I gotta<|endoftext|>I think, you haven't,<|endoftext|>I've gotta go there and <|endoftext|>Yeah.<|endoftext|>and, I mean I like it, uh, I've never really been there yet,<|endoftext|>but I ain't just sort of,<|endoftext|>I've, I've always been up there, you know, and I've never been there for a long time<|endoftext|>Yeah.<|endoftext|>and I've very nearly had,<|endoftext|>but, I bet I've been there for a long time,<|endoftext|>so I know,<|endoftext|>I thought I've been through a long time,<|endoftext|>and I couldn't get to the, uh, and I don't like it.<|endoftext|>But if I were to do that, I had a morning time when I was just done here.<|endoftext|>Uh, I I was just getting lost, uh, I was, I was about to, you know.<|endoftext|>You know, I was just, I was, I was just a little bit nervous,<|endoftext|>Uh, uh, you know,<|endoftext|>I think we have enough time to see it.<|endoftext|>Well
+════════════════════════════════════════════════════════════
+

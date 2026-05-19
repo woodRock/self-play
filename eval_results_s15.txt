@@ -1,0 +1,53 @@
+# task 78: python3 eval.py --baseline_dir=out-babylm-s15 --selfplay_dir=out-babylm-selfplay-s15 --eval_iters=200 --device=cuda
+# server: cuda18  CUDA_VISIBLE_DEVICES: 0
+# started: 2026-05-20T04:06:23.249508
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s15
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s15
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s15  (iter 20000)
+  Self-play : out-babylm-selfplay-s15  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8664     47.7710
+  Self-play                 3.8698     47.9324
+  Δ (SP − BL)              ▲0.0034     ▲0.1614
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.77%   35.73%    3.99%
+  Self-play              31.77%   35.72%    4.03%
+  Δ (SP − BL)            +0.00%   -0.00%   +0.04%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.04% vs common chars by -0.00%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s15]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm not in that position.<|endoftext|>You should come back.<|endoftext|>It's not under control!<|endoftext|>Please, tell me what you're talking about.<|endoftext|>What are you doing here?<|endoftext|>- What did you see?<|endoftext|>- I was out of prison.<|endoftext|>You could have said you were a fool.<|endoftext|>- I'll have to go back.<|endoftext|>- I'm with you.<|endoftext|>Yes. <|endoftext|>But I'll tell you we're all in our house.<|endoftext|>The house's not coming to stay.<|endoftext|>The house's not coming from behind.<|endoftext|>Not at all. <|endoftext|>It's taken.<|endoftext|>Take it.<|endoftext|>The house is open now.<|endoftext|>That's not the house, though.<|endoftext|>Yes, see how you see it.<|endoftext|>You can see it.<|endoftext|>I'm not going to do it.<|endoftext|>I don't care if I'm not going to leave it.<|endoftext|>May I go?<|endoftext|>And isn't a doctor, Mr. President?<|endoftext|>Oh, yes.<|endoftext|>Is the doctor right?<|endoftext|>No, he has lunch.<|endoftext|>Well, you can ask me if I can.<|endoftext|>She's in a way.<|endoftext|>I've got a job to take a seat of this, and I'll be right back to you.<|endoftext|>Okay, just put on with the table.<|endoftext|>To the chair, you're looking on the table.<|endoftext|>The girls are looking for it.<|endoftext|>I can't use the plates.<|endoftext|>I'll be there for the little table.<|endoftext|>Pardon?<|endoftext|>Yes, I'll be there.<|endoftext|>What is this?<|endoftext|>Good.<|endoftext|>What is it?<|endoftext|>Is that it?<|endoftext|>It's like they've changed.<|endoftext|>I'm not sure.<|endoftext|>You are going to be here for a couple of weeks.<|endoftext|>You're not going to let me, anyway, you're going to fight.<|endoftext|>Oh, yes.<|endoftext|>Ah.<|endoftext|>M
+
+[Self-play — out-babylm-selfplay-s15]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm in the police.<|endoftext|>Oh, yeah, I think I'm in the car.<|endoftext|>I'll tell you something.<|endoftext|>I'm in D.C. <|endoftext|>We're in the car.<|endoftext|>You're in the car.<|endoftext|>You're in the car, man.<|endoftext|>You're in the car.<|endoftext|>Oh, don't worry about it.<|endoftext|>I'm a lot better with you.<|endoftext|>But I'm not the wrong.<|endoftext|>I'm almost a little girl.<|endoftext|>We're not gonna get more.<|endoftext|>I'm gonna let you know this!<|endoftext|>I'm gonna stay here.<|endoftext|>I think we're gonna be proud of the people now.<|endoftext|>That's not the only way I've tried to stay.<|endoftext|>I'm gonna get you killed.<|endoftext|>I'm gonna get you, see?<|endoftext|>Come on, man.<|endoftext|>I gotta get you.<|endoftext|>Come on, man, you go.<|endoftext|>Let's go.<|endoftext|>Hey, I'm just telling you this.<|endoftext|>I'm sorry, I was so sorry, but I'm not serious.<|endoftext|>I don't even know if I could.<|endoftext|>She don't go.<|endoftext|>I can't try that.<|endoftext|>Okay, I'll have to go.<|endoftext|>I'll talk to you around.<|endoftext|>What's the matter with these guys?<|endoftext|>What's wrong with you?<|endoftext|>I'm sorry.<|endoftext|>I'm okay.<|endoftext|>It's okay.<|endoftext|>We're going to make you a little sure you don't like it.<|endoftext|>Hey, hey.<|endoftext|>It's good.<|endoftext|>You don't want to do this anymore.<|endoftext|>Just tell me what I'm gonna do.<|endoftext|>–You know what?<|endoftext|>He's in the hospital...<|endoftext|>–You know what?<|endoftext|>–No.<|endoftext|>–No.<|endoftext|>–No. <|endoftext|>–No, no, you can't.<|endoftext|>–No, no, no. <|endoftext|>It's
+════════════════════════════════════════════════════════════
+

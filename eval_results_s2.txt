@@ -1,0 +1,53 @@
+# task 65: python3 eval.py --baseline_dir=out-babylm-s2 --selfplay_dir=out-babylm-selfplay-s2 --eval_iters=200 --device=cuda
+# server: cuda18  CUDA_VISIBLE_DEVICES: 0
+# started: 2026-05-20T04:05:19.473272
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s2
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s2
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s2  (iter 20000)
+  Self-play : out-babylm-selfplay-s2  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8624     47.5790
+  Self-play                 3.8633     47.6241
+  Δ (SP − BL)              ▲0.0009     ▲0.0451
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.86%   35.81%    4.13%
+  Self-play              31.98%   35.92%    4.31%
+  Δ (SP − BL)            +0.12%   +0.11%   +0.18%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.18% vs common chars by +0.11%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s2]
+
+ is sometimes called the "c". It is often used so that a person with a person called a person's soul is called a "c".<|endoftext|>Geography.<|endoftext|>The first biggest city is the "caldro" (1952–1947).<|endoftext|>There is an area of about 10,000 people living there. The city was first found in 1440 as a "cetian". In the 17th century there is a lot of people call the "vacic". Many local cities went to the city and brought to the city.<|endoftext|>Geography.<|endoftext|>The United States is the largest city in the world. In 1803, the city was once used for a city, called the "stas" or "Doré" (161845–1877). This area was named after the "Coffie" and was used for "Doré".<|endoftext|>The city is on the central part of the town of the "May" of France.<|endoftext|>Other towns.<|endoftext|>The town is called "Shoré", "Slešia" (died 2nd) and "Sleastse" (the "The Battle of the Rhine-Bépartement" of France).<|endoftext|>Egué<|endoftext|>Egué is a commune. It is found on the region Basse-Normandie in the Calvados department in the northwest of France.<|endoftext|>Sesse-Sister<|endoftext|>Sesse-Sister is a commune. It is found in the region Basse-Normandie in the Calvados department in the northwest of France. On 1 January 2016, it was merged into the new commune of Williamèv.<|endoftext|>Sesse-Sister<|endoftext|>Sesse-Sister is a commune. It is found in the region Basse-Normandie in the Calvados department in the northwest of France.<|endoftext|>Sesse-et<|endoftext|>S
+
+[Self-play — out-babylm-selfplay-s2]
+
+ is sometimes called the "M". It is the main name of a person that is used in modern language. <|endoftext|>An example is called "M" or "M" or "M" or "M" for "M" or "M" or "M" or "M" or "M"". The official name is "M" or "O" is "M" (which is a "d" or "M" or "E" in "M"". Many local people speak in the language called "The M" or "A" (or "a".a "M" is a "F" or "M" (a "M". (a "M" or "m" or "M"). The "M" is used as a "M" and "M" (or "M" (a, "H" (or "An" in a "M" (a "d". are "M" (a "M" ('s"). "M" is used as a free-speaking. The "M" has some number, with the "M" (e), "M" (i), and "M" (i").<|endoftext|>The "M" is used to be a "M" (a "M"). The very interesting means of "M" is that which is the "M" (the "M" (the "M" is similar to "M" or "M" or "M" (the "M" in the "O" and "M". "M" in "M" is a "M". A first thing is "M" is "M" in "M" (a). If "M" is "a" in the "M" (a). This is the "M" on the A" (a "M" (a, in the "M" (a) and "M" (the "M" is on
+════════════════════════════════════════════════════════════
+

@@ -1,0 +1,53 @@
+# task 71: python3 eval.py --baseline_dir=out-babylm-s8 --selfplay_dir=out-babylm-selfplay-s8 --eval_iters=200 --device=cuda
+# server: cuda20  CUDA_VISIBLE_DEVICES: 3
+# started: 2026-05-20T04:05:19.602579
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s8
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s8
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s8  (iter 20000)
+  Self-play : out-babylm-selfplay-s8  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8620     47.5580
+  Self-play                 3.8649     47.6974
+  Δ (SP − BL)              ▲0.0029     ▲0.1393
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.80%   35.76%    4.01%
+  Self-play              31.83%   35.75%    4.31%
+  Δ (SP − BL)            +0.03%   -0.01%   +0.30%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.30% vs common chars by -0.01%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s8]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm not in that house.<|endoftext|>You should be in trouble.<|endoftext|>I'll just have to leave her alone.<|endoftext|>- You won't help.<|endoftext|>- You'll never have to let me go.<|endoftext|>You gotta find out who I am.<|endoftext|>I'm the husband.<|endoftext|>You got to call me, but I'll have to call me.<|endoftext|>You want to let me go.<|endoftext|>- What happened?<|endoftext|>- No, we don't.<|endoftext|>So you're done with this.<|endoftext|>What happened?<|endoftext|>You know what?<|endoftext|>I don't know what you know.<|endoftext|>I was like this.<|endoftext|>Like a kid, some kids who don't.<|endoftext|>That's like a kid, and they're like a kid.<|endoftext|>And they're like, "I know, I know, that's really funny, that's why I ask you something<|endoftext|>"and I don't know what I mean.<|endoftext|>"Why was it so big that I'd take you to sleep with your dad?"<|endoftext|>- Would you like your mom's, honey?<|endoftext|>-No.<|endoftext|>It's not like the baby.<|endoftext|>I was like, "What's the matter with that?"<|endoftext|>Like the boy I know,<|endoftext|>"you know, you're not like,<|endoftext|>"and I bet you're like, "but I'll always have to do a lot of nice stuff.<|endoftext|>"Here's a lot of of money.<|endoftext|>"If you were to go to sleep, I wouldn't like to sleep."<|endoftext|>You know, I'm like, "you don't want to do this anymore."<|endoftext|>"You're a great big friends.<|endoftext|>"You know what I'm getting.<|endoftext|>"See you soon.<|endoftext|>You are going to quit now, and you're gonna tell me how I come."<|endoftext|>"No, no, you can't," I think we're gonna have to.<|endoftext|>"You're
+
+[Self-play — out-babylm-selfplay-s8]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm not in that case.<|endoftext|>You should have known that I was in that case.<|endoftext|>I'll tell you something.<|endoftext|>I'm still in the hospital.<|endoftext|>Not to worry about...<|endoftext|>I'm in the hospital.<|endoftext|>- I'm not in the hospital.<|endoftext|>- What's it matter?<|endoftext|>- I'll tell you something.<|endoftext|>I want a little more.<|endoftext|>I've never done anything more.<|endoftext|>I'm in the hospital.<|endoftext|>So you're done with me.<|endoftext|>What do you think?<|endoftext|>I don't know.<|endoftext|>But what do you think I'm doing here this afternoon?<|endoftext|>It's the entire hospital.<|endoftext|>I'm sorry.<|endoftext|>I didn't know that you were there.<|endoftext|>There was a man in the room.<|endoftext|>Who is that?<|endoftext|>I don't know, but I can't ask.<|endoftext|>It looks like a man in the house, but...<|endoftext|>"Why was he so man"?<|endoftext|>I'm just...<|endoftext|>I'm tired.<|endoftext|>I'm never really tired.<|endoftext|>I'm really sorry.<|endoftext|>But if you say, you're the one that's going to be okay.<|endoftext|>I can never try again.<|endoftext|>Okay.<|endoftext|>Hey, fellas.<|endoftext|>Hey, come on.<|endoftext|>I'll kill you.<|endoftext|>I'll kill you.<|endoftext|>We've got to kill you.<|endoftext|>I'll kill you.<|endoftext|>Please.<|endoftext|>You gotta kill yourself.<|endoftext|>If you want to kill me and you don't let me go.<|endoftext|>I don't wanna kill myself.<|endoftext|>First time I go to hell, yes.<|endoftext|>What? <|endoftext|>I I don't know.<|endoftext|>You know what I'm getting.<|endoftext|>I'm gonna kill you!<|endoftext|>I've ever even had a ghost on me.<|endoftext|>Who's that?<|endoftext|>I've seen you.<|endoftext|>You can't do that.<|endoftext|>Please!<|endoftext|>You're right.<|endoftext|>Let
+════════════════════════════════════════════════════════════
+

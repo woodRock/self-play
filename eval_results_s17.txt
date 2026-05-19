@@ -1,0 +1,53 @@
+# task 80: python3 eval.py --baseline_dir=out-babylm-s17 --selfplay_dir=out-babylm-selfplay-s17 --eval_iters=200 --device=cuda
+# server: cuda15  CUDA_VISIBLE_DEVICES: 2
+# started: 2026-05-20T04:06:23.289500
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s17
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s17
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s17  (iter 20000)
+  Self-play : out-babylm-selfplay-s17  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8611     47.5185
+  Self-play                 3.8625     47.5850
+  Δ (SP − BL)              ▲0.0014     ▲0.0665
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.86%   35.83%    4.02%
+  Self-play              31.91%   35.87%    4.12%
+  Δ (SP − BL)            +0.05%   +0.04%   +0.10%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.10% vs common chars by +0.04%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s17]
+
+.<|endoftext|>Yeah, but I'm in case my son isn't a good-looking man.<|endoftext|>Exactly. <|endoftext|>An'unty.<|endoftext|>It's a beautiful day, isn't it?<|endoftext|>Yes. <|endoftext|>Let's put the hand on the mouth.<|endoftext|>No, but I'll put it right in the mouth, man.<|endoftext|>So it's just as if I'll have to.<|endoftext|>I'll give a little more.<|endoftext|>Okay, call me.<|endoftext|>I'll tell you we're going to kill you.<|endoftext|>Look, you know what?<|endoftext|>I think I'm a bad guy.<|endoftext|>I'm gonna tell you something.<|endoftext|>It's pretty tough to tell you.<|endoftext|>Since then, you only have to come out,<|endoftext|>I'll put you out there.<|endoftext|>There's only one person who killed the woman.<|endoftext|>How dare you, Tom?<|endoftext|>Come on, man.<|endoftext|>Whoa, shit.<|endoftext|>Come on, guys, you go out, okay?<|endoftext|>Can's go out, baby.<|endoftext|>I'm sorry.<|endoftext|>Sle of this.<|endoftext|>I just didn't take the money off.<|endoftext|>It's a normal one, I'm a real man.<|endoftext|>What's this?<|endoftext|>I did it, and I thought it was a real thing.<|endoftext|>You're not a ghost?<|endoftext|>What's this?<|endoftext|>- What's that?<|endoftext|>- It's a fucking accident.<|endoftext|>- It's a accident.<|endoftext|>It's a police accident.<|endoftext|>It's all right.<|endoftext|>It's just the time it was all right.<|endoftext|>We heard this from the fire.<|endoftext|>The fire was full of fire.<|endoftext|>What? <|endoftext|>I think it was.<|endoftext|>I think it was a very good night.<|endoftext|>See you soon.<|endoftext|>You are going to quit now, Jimmy.<|endoftext|>I tell you.<|endoftext|>My business is to be, uh, you know,<|endoftext|>I think we have enough time to see it.<|endoftext|>Let
+
+[Self-play — out-babylm-selfplay-s17]
+
+.<|endoftext|>Yeah, but I'm in the kitchen for so long.<|endoftext|>- I'm in the kitchen. <|endoftext|>I'm in the bathroom.<|endoftext|>I'll get the coffee.<|endoftext|>I'm in the kitchen for you.<|endoftext|>We're gonna stay home for 10 hours.<|endoftext|>- I'll meet you at the office.<|endoftext|>- I'll be fine.<|endoftext|>- That'll be good.<|endoftext|>- Yeah, I'm fine with you.<|endoftext|>Yes. <|endoftext|>But...<|endoftext|>Say, we're all in the house.<|endoftext|>The house's not coming to the floor.<|endoftext|>Why don't I just talk about this?<|endoftext|>I'm sorry for you.<|endoftext|>I need you to know how to dance.<|endoftext|>I need you to talk, but I'll help you.<|endoftext|>I need you to see something in my room.<|endoftext|>I'll tell you, it's all right, I'll be in the bathroom.<|endoftext|>I'll tell you how much you actually talk.<|endoftext|>- For me.<|endoftext|>- I'll talk to you tomorrow.<|endoftext|>- I'm sorry.<|endoftext|>- I'm sorry, but I'm sorry.<|endoftext|>- I don't even have the sense I'm a cop.<|endoftext|>I'll tell you.<|endoftext|>But I want to talk to you.<|endoftext|>I'm not gonna want you to talk to me.<|endoftext|>What's the matter with me?<|endoftext|>I'm not gonna tell you anything, though.<|endoftext|>I'm sorry.<|endoftext|>You know, I gotta talk to you.<|endoftext|>D'all just shut up.<|endoftext|>Let's get the hell out of here.<|endoftext|>If I'm not interested in this, I'm fine.<|endoftext|>A little girl might have come back here.<|endoftext|>Not doing that.<|endoftext|>- Did you get the feeling?<|endoftext|>- Yeah!<|endoftext|>I've finally decided what I thought.<|endoftext|>I was just a little.<|endoftext|>I've, uh, said you wouldn't have seen anyone else's parents.<|endoftext|>No, you...<|endoftext|>
+════════════════════════════════════════════════════════════
+

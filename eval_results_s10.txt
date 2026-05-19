@@ -1,0 +1,53 @@
+# task 73: python3 eval.py --baseline_dir=out-babylm-s10 --selfplay_dir=out-babylm-selfplay-s10 --eval_iters=200 --device=cuda
+# server: cuda16  CUDA_VISIBLE_DEVICES: 2
+# started: 2026-05-20T04:05:51.377862
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s10
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s10
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s10  (iter 20000)
+  Self-play : out-babylm-selfplay-s10  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8611     47.5188
+  Self-play                 3.8671     47.8043
+  Δ (SP − BL)              ▲0.0060     ▲0.2855
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.85%   35.80%    4.17%
+  Self-play              31.84%   35.78%    4.22%
+  Δ (SP − BL)            -0.01%   -0.02%   +0.05%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.05% vs common chars by -0.02%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s10]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm not in that position.<|endoftext|>You should know that.<|endoftext|>It's not under control!<|endoftext|>Please, tell me you're coming home.<|endoftext|>I'm gonna miss you.<|endoftext|>That's right.<|endoftext|>You're going to have a good time now.<|endoftext|>You're going to meet me.<|endoftext|>I'm gonna take care of you.<|endoftext|>I'll leave you alone with you.<|endoftext|>Yes.<|endoftext|>- What's wrong?<|endoftext|>You don't want to live with me?<|endoftext|>- Yes.<|endoftext|>Is this your boss here?<|endoftext|>Yes. <|endoftext|>Oh!<|endoftext|>I'm sorry.<|endoftext|>Why are you doing this?<|endoftext|>Oh, no, no, you're not gonna let her alone.<|endoftext|>Okay.<|endoftext|>I see how you doing this, but...<|endoftext|>I can't tell you, it's really funny, but you can't ask me...<|endoftext|>I think so.<|endoftext|>Are you serious?<|endoftext|>I'm okay. <|endoftext|>I'm fine.<|endoftext|>You're late.<|endoftext|>You're late.<|endoftext|>Well, if you're late, you should tell me.<|endoftext|>What do you mean?<|endoftext|>Well, I'm tired.<|endoftext|>What's going on here?<|endoftext|>What're you doing here?<|endoftext|>I'm not gonna tell you what you'd like<|endoftext|>Okay, just tell me about the first time we got up.<|endoftext|>Okay, I'm just going to tell you what your problem is.<|endoftext|>- What about the time?<|endoftext|>- I can't tell you what it's like.<|endoftext|>- Oh, yeah.<|endoftext|>We're going to give you a chance to do this.<|endoftext|>What? <|endoftext|>I just don't know.<|endoftext|>- You know what?<|endoftext|>What's the line?<|endoftext|>I've been finding out this over here for a while.<|endoftext|>What's the deal?<|endoftext|>It's not, uh, you know, you're having a little trouble.<|endoftext|>- That's...<|endoftext|>
+
+[Self-play — out-babylm-selfplay-s10]
+
+ is sometimes called the "c". If we can get so far as the "b" (d. "b" means "c" (a "g"). If we can get through this "c" (e.g). If we can be used to see "c" (e.g., "c" (g.g., "g" or "g" (c.g., "g. c.g., "c.g., "g."". Many localities can be used to be used for the "op" or "p" (a female) "jud" (e.g., "e.g., "M".g.", "y."") "a" is used, but "a", and "c" is also used for "judta-e", "a" and "a "b" or "e" in a subb" means "a"".<|endoftext|>Some parts of the family are "c" a sub-x", "b" or "b" or "c" for "d"y" or "g" "e".<|endoftext|>These are the names "z" and "b" and "k" of a "c" or "c" ("little") "c". They have "c"<|endoftext|>"n" is a "c" of "b" written by Alanon, though "b" and "b" are "c".<|endoftext|>Racac-Cac-Cac department<|endoftext|>Racac-Cac-Cac-Cac-Cac-Cac is a commune. It is in the region Basse-Normandie in the Calvados department in the northwest of France.<|endoftext|>The new commune is found in the region Basse-Normandie in the Calvados department in the northwest of France.<|endoftext|>Rac-Cac-Cac-Cac-Cac-
+════════════════════════════════════════════════════════════
+

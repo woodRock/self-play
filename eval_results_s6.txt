@@ -1,0 +1,53 @@
+# task 69: python3 eval.py --baseline_dir=out-babylm-s6 --selfplay_dir=out-babylm-selfplay-s6 --eval_iters=200 --device=cuda
+# server: cuda14  CUDA_VISIBLE_DEVICES: 2
+# started: 2026-05-20T04:05:19.561778
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s6
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s6
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s6  (iter 20000)
+  Self-play : out-babylm-selfplay-s6  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8601     47.4716
+  Self-play                 3.8603     47.4816
+  Δ (SP − BL)              ▲0.0002     ▲0.0100
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.90%   35.88%    4.01%
+  Self-play              31.87%   35.81%    4.25%
+  Δ (SP − BL)            -0.03%   -0.07%   +0.23%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.23% vs common chars by -0.07%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s6]
+
+ is sometimes called the "c".<|endoftext|>	The main name "c" means "c".<|endoftext|>	The "c" or "c" means "g" means "f" equals "p" (e.g).<|endoftext|>	Not "c" means "that "c" is a kind of type "c" of a "c" or "c". That means "e" is always a "c" (h".<|endoftext|>	The call "a". The word "c" means "c" means "a" ("a" or "n" (a). This means "e" (a) "a" meaning for "a", "a". For example, some species "a".<|endoftext|>= = = "c" (or "n"") = = =<|endoftext|>	" is a commune. It is a commune. It is in the regione. In 2012, the new commune of the Côtes-d'Armor department.<|endoftext|>	The commune is found in the region Basse-Normandie in the Calvados department in the northwest of France.<|endoftext|>= = = Calvadosi-Normandie in the Calvados department in the northwest of France.<|endoftext|>= = = Calvados department in the northwest of France.<|endoftext|>= = = Calvados department in the northwest of France.<|endoftext|>= = = Calvados department in the northwest of France.<|endoftext|>= = = Calvados department in the northwest of France.<|endoftext|>= = = Calvados department in the northwest of France.<|endoftext|>= = = 2013 Calvados department in the northwest of France.<|endoftext|>= = = Mokgogèze<|endoftext|>	Mokgoggog is a commune of the Pyrénées-Atlantiques "département" in the southwestern part of France.<|endoftext|>= = = Malurreebelard-e de lépartement
+
+[Self-play — out-babylm-selfplay-s6]
+
+.<|endoftext|>Yeah, but I'm in case.<|endoftext|>I'm not in that position.<|endoftext|>You should have known that I was in charge of the murder,<|endoftext|>I was aware of the amount of help.<|endoftext|>What? <|endoftext|>We're gonna have to do that.<|endoftext|>We don't have to do that.<|endoftext|>You could have said you got to do it, but I'll have to actually get a lawyer.<|endoftext|>I'm done with it.<|endoftext|>Just a minute, but I'm not sure if you're here to say I'm in case I can stay.<|endoftext|>I'm in a way. <|endoftext|>I'm in an hour.<|endoftext|>I'll give you an address.<|endoftext|>Oh, oh, yes, you're right.<|endoftext|>I'll give you a phone call.<|endoftext|>There's a phone call.<|endoftext|>- You can take a answer.<|endoftext|>- I'm sorry.<|endoftext|>I love you.<|endoftext|>It looks like a phone call.<|endoftext|>You can go to my place.<|endoftext|>Can's go. <|endoftext|>You can't go.<|endoftext|>I'm sorry.<|endoftext|>- What time did you ask?<|endoftext|>- I just wanted to say, "Oh, I'm a friend."<|endoftext|>I'll ask you for a time.<|endoftext|>Can't you go or have a drink?<|endoftext|>- No, I'd just go.<|endoftext|>- You know, I've got a drink.<|endoftext|>Are you sure I'm a nice woman?<|endoftext|>- I'm a guy.<|endoftext|>- Yes.<|endoftext|>Why, all right?<|endoftext|>- I don't like it.<|endoftext|>- Oh, yeah.<|endoftext|>We're not interested in this.<|endoftext|>- Thank you.<|endoftext|>- Thank you.<|endoftext|>- Thank you.<|endoftext|>I feel like I'm very proud.<|endoftext|>I'm glad I do.<|endoftext|>I've finally decided to work.<|endoftext|>I've decided to come to a business.<|endoftext|>- It's so tired. <|endoftext|>Come on.<|endoftext|>- I'm not sure.<|endoftext|>-
+════════════════════════════════════════════════════════════
+

@@ -1,0 +1,52 @@
+# task 64: python3 eval.py --baseline_dir=out-babylm-s1 --selfplay_dir=out-babylm-selfplay-s1 --eval_iters=200 --device=cuda
+# server: cuda16  CUDA_VISIBLE_DEVICES: 2
+# started: 2026-05-20T04:05:19.451297
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s1
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s1
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s1  (iter 20000)
+  Self-play : out-babylm-selfplay-s1  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8611     47.5179
+  Self-play                 3.8627     47.5940
+  Δ (SP − BL)              ▲0.0016     ▲0.0761
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.87%   35.82%    4.18%
+  Self-play              31.93%   35.89%    4.19%
+  Δ (SP − BL)            +0.06%   +0.07%   +0.02%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.02% (both common and rare improve).
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s1]
+
+.<|endoftext|>Yeah, but I'm not sure.<|endoftext|>I'm not sure that I'd be very sure that I'd be able to do that.<|endoftext|>I'll do this, and I'll do it.<|endoftext|>What are you doing here?<|endoftext|>- What did you see?<|endoftext|>- I was out here.<|endoftext|>- I could have seen you in a while.<|endoftext|>- I'll have to.<|endoftext|>- What's this?<|endoftext|>- Where the hell are you going?<|endoftext|>Where are you going?<|endoftext|>I'm here to work.<|endoftext|>- Oh, my God.<|endoftext|>- All right.<|endoftext|>- All right.<|endoftext|>- You're here for a while and a little.<|endoftext|>- A little bit.<|endoftext|>- So I'm gonna end up with a man at school.<|endoftext|>- I've got to get one of the lads together.<|endoftext|>- You've got to, like, 1 1, 1...<|endoftext|>I think I'm going to say, "How time does he want to get a dog?"<|endoftext|>- I mean, that's what I mean.<|endoftext|>- I think you're going to take lunch.<|endoftext|>- How long have you been in the house?<|endoftext|>- Well, go home. <|endoftext|>What time did you get the boy here?<|endoftext|>- I don't want you very much.<|endoftext|>- You know, you know, I mean, it's like, you know, I don't want to get a dog.<|endoftext|>I don't want to go to the house, all right?<|endoftext|>- I don't like it.<|endoftext|>- Oh, yeah. <|endoftext|>It's like a dog.<|endoftext|>- Oh yes.<|endoftext|>- Thank you.<|endoftext|>- Thank you.<|endoftext|>I don't like it.<|endoftext|>But I would, you know.<|endoftext|>You know, I don't care.<|endoftext|>I know.<|endoftext|>- This is her.<|endoftext|>- It's, you know, she was an early woman.<|endoftext|>- That's terrible.<|endoftext|>
+
+[Self-play — out-babylm-selfplay-s1]
+
+.<|endoftext|>Yeah, but I'm in case   so <|endoftext|>And that's <|endoftext|>You should know <|endoftext|>I mean, that's the thing,<|endoftext|>Well I'll have to get some help.<|endoftext|>What?<|endoftext|>Not very good.<|endoftext|>But it's not so good.<|endoftext|>I mean, I don't know, I, I mean it is <|endoftext|>I've got it on actually, that's bad.<|endoftext|>I've got it on <|endoftext|>But it's cold.<|endoftext|>You don't like it <|endoftext|>Oh.<|endoftext|>you don't like it.<|endoftext|>No.<|endoftext|>a little  <|endoftext|>Oh!<|endoftext|>I like it.<|endoftext|>Well this <|endoftext|>No it's alright <|endoftext|>I don't like it.<|endoftext|>I didn't like it at all.<|endoftext|>I mean, I don't know what the hell.<|endoftext|>Oh, my, that's right, yeah<|endoftext|>I mean, it's<|endoftext|>I think<|endoftext|>I haven't seen it yet.<|endoftext|>and there was <|endoftext|>Yeah.<|endoftext|>But I just wondered if it happens there.<|endoftext|>Yeah.<|endoftext|>It's just the way to speak.<|endoftext|>No.<|endoftext|>It's, it's, it's a bit difficult to go to something <|endoftext|>Does that have it?<|endoftext|>Yeah.<|endoftext|>We, we don't want it very interesting.<|endoftext|>Yeah, it's really, it's, it's just things that, it's a lot of nice stuff that I've seen.<|endoftext|>It's a little bit better to get to make sure that it's a lot easier to get the other stuff and they'll use the stuff.<|endoftext|>Yeah.<|endoftext|>What I've seen is <|endoftext|>What we've seen is I'm <|endoftext|>What <|endoftext|>I was with the B C C C, you know.<|endoftext|>You know, I've worked for a couple of different people <|endoftext|>Yes.<|endoftext|>and I mean, uh, you can't make a load of money like that.<|endoftext|>Well you can do
+════════════════════════════════════════════════════════════
+

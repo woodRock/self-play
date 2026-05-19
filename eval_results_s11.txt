@@ -1,0 +1,53 @@
+# task 74: python3 eval.py --baseline_dir=out-babylm-s11 --selfplay_dir=out-babylm-selfplay-s11 --eval_iters=200 --device=cuda
+# server: cuda15  CUDA_VISIBLE_DEVICES: 1
+# started: 2026-05-20T04:05:51.398009
+# working_dir: /vol/ecrg-solar/woodj4/self-play
+────────────────────────────────────────────────────────────
+
+Loading baseline  : out-babylm-s11
+number of parameters: 29.94M
+Loading self-play : out-babylm-selfplay-s11
+number of parameters: 29.94M
+Computing token frequencies from data/babylm/train.bin...
+Evaluating over 200 batches of 16 × 128...
+
+════════════════════════════════════════════════════════════
+  EVALUATION RESULTS
+  Baseline  : out-babylm-s11  (iter 20000)
+  Self-play : out-babylm-selfplay-s11  (iter 20000)
+  Dataset   : babylm  |  Batches: 200  |  Batch: 16  |  Block: 128
+════════════════════════════════════════════════════════════
+
+LOSS & PERPLEXITY
+                          Val Loss  Perplexity
+  Baseline                  3.8631     47.6134
+  Self-play                 3.8594     47.4376
+  Δ (SP − BL)            ▼0.0037 ✓   ▼0.1758 ✓
+
+ACCURACY
+                         Overall    Common      Rare
+  Baseline               31.81%   35.77%    4.03%
+  Self-play              31.92%   35.88%    4.15%
+  Δ (SP − BL)            +0.11%   +0.11%   +0.12%
+
+  Common chars (1903 covering 80% of training tokens):
+  '\'!\' \'"\' \'#\' \'%\' \'&\' "\'" \'(\' \')\' \'*\' \',\' \'-\' \'.\' \'/\' \'0\' \'1\' \'2\' \'3\' \'4\' \'5\' \'6\'...'
+  Common token positions: 358,496  |  Rare token positions: 51,104
+
+  → Self-play improves rare chars by +0.12% vs common chars by +0.11%.
+    Consistent with the curriculum hypothesis.
+
+════════════════════════════════════════════════════════════
+  GENERATION  (seed=1337, temperature=0.8, max_new_tokens=400)
+  Prompt: '\n'
+════════════════════════════════════════════════════════════
+
+[Baseline — out-babylm-s11]
+
+ is sometimes called the "M". It is the main name of a "Rede" (an American "Laurenterae"). It is an island of the Western Red Sea. It is located on the southern part of the island of Korea.<|endoftext|>The name "Mambi" was the name of the "Mambi" of the "Moyra" of the "Xosto". It was a part of the early part of the island. It is in many parts of the Sea.<|endoftext|>The name "Mambi" is the name of "Mambi" which used to be used in the areas of India. Before the Republic ofMambi people speak the "Mambi" or "Mambi" ( ) region since the northwest of Zangi.<|endoftext|>Lambi was also the capital of the country. It was in the city of Nambi on the central part of the city.<|endoftext|>Lambi people.<|endoftext|>Lambi's capital, Kambi was the first province of the province of Zangipak. The capital of the few districts was Zangangi, Nambi, and the capital of Laimi. <|endoftext|>The country was originally known as "Lambi", and it was formed by King of Nongthi, the capital of Kharti. The current population was one of the most ancient city of the countries in the United States. The city of Nongthi was established in 1877.<|endoftext|>The city of Mambi was created on 12 March 1969 and began in 1841. After the first two days, the city became the first state in 1869. The city was named after Leipzig in 1883.<|endoftext|>The city of Pambi is a small city and a population of 668 people. It is in the main city, after the 19th century BC. The city's capital city is Kambi. It
+
+[Self-play — out-babylm-selfplay-s11]
+
+.<|endoftext|>Mm.<|endoftext|>Sorry?<|endoftext|>I think so.<|endoftext|>And that's a bit of a bit of a bit more work now.<|endoftext|>It's a bit of a way to get off.<|endoftext|>It's gonna be a very good idea then.<|endoftext|>There's an awful lot of a lot of other work we can actually get on.<|endoftext|>I think it's a different kind of thing actually.<|endoftext|>I think I'm really done with it with this thing.<|endoftext|>I think it's an accident.<|endoftext|>Well I was just done with this.<|endoftext|>What I always think is that it's not a <|endoftext|>Oh!<|endoftext|>I think I'm a bit of <|endoftext|>No, I'm <|endoftext|>I don't think I'm<|endoftext|>or I'll, I've got to do see how I feel.<|endoftext|>Well we'll get this together.<|endoftext|>Now, that's right, that's right.<|endoftext|>That's the only way<|endoftext|>It's right.<|endoftext|>It's time to say I want to be one of the things I've ever done.<|endoftext|>But, I've never had your time to, to speak to my wife.<|endoftext|>It's time to talk to you.<|endoftext|>She don't go to a <|endoftext|>Does that mean it?<|endoftext|>Yeah.<|endoftext|>We don't know, I mean, I'd just<|endoftext|>Okay, I bet it's time for you.<|endoftext|>We've got to do a though and then when we're up through a pound it's a little bit better off, you know, well, and you know, like, no other thing.<|endoftext|>We just do have a lot of time, but when you do do have a lot of money, you have to do.<|endoftext|>I mean  I mean, I think we would, you know.<|endoftext|>You know, I mean, I mean, when you tell people that their, they, you know, they, you know, their own money is as enough to have this money.<|endoftext|>M
+════════════════════════════════════════════════════════════
+
