@@ -1,0 +1,3 @@
+{"type": "val", "iter": 0, "train_loss": 10.900808334350586, "val_loss": 10.898398399353027}
+{"type": "train", "iter": 0, "loss": 10.91227912902832}
+{"type": "val", "iter": 5, "train_loss": 10.873823165893555, "val_loss": 10.906292915344238}
