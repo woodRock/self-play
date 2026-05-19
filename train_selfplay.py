@@ -18,6 +18,8 @@ import copy
 import time
 import math
 import pickle
+import json
+import datetime
 from contextlib import nullcontext
 
 import numpy as np
@@ -81,7 +83,7 @@ config = {k: globals()[k] for k in config_keys}
 
 ddp = int(os.environ.get('RANK', -1)) != -1
 if ddp:
-    init_process_group(backend=backend)
+    init_process_group(backend=backend, timeout=datetime.timedelta(minutes=30))
     ddp_rank = int(os.environ['RANK'])
     ddp_local_rank = int(os.environ['LOCAL_RANK'])
     ddp_world_size = int(os.environ['WORLD_SIZE'])
@@ -226,6 +228,10 @@ while True:
     if iter_num % eval_interval == 0 and master_process:
         losses = estimate_loss()
         print(f"step {iter_num}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}")
+        with open(os.path.join(out_dir, 'loss_log.jsonl'), 'a') as f:
+            f.write(json.dumps({'type': 'val', 'iter': iter_num,
+                                'train_loss': float(losses['train']),
+                                'val_loss': float(losses['val'])}) + '\n')
         if wandb_log:
             wandb.log({"iter": iter_num, "train/loss": losses['train'],
                        "val/loss": losses['val'], "lr": lr, "mfu": running_mfu*100})
@@ -282,14 +288,17 @@ while True:
 
     if grad_clip != 0.0:
         scaler.unscale_(optimizer)
-        torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
+        grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
+    else:
+        grad_norm = None
     scaler.step(optimizer)
     scaler.update()
     optimizer.zero_grad(set_to_none=True)
 
     # sync opponent to current weights periodically
     if iter_num > 0 and iter_num % opponent_update_interval == 0:
-        model_opponent.load_state_dict(raw_model.state_dict())
+        state_dict = {k.replace('_orig_mod.', ''): v for k, v in raw_model.state_dict().items()}
+        model_opponent.load_state_dict(state_dict)
         model_opponent.eval()
         for p in model_opponent.parameters():
             p.requires_grad = False
@@ -299,10 +308,16 @@ while True:
     t0 = t1
     if iter_num % log_interval == 0 and master_process:
         lossf = loss.item() * gradient_accumulation_steps
+        if math.isnan(lossf) or math.isinf(lossf):
+            print(f"iter {iter_num}: loss is {lossf} — training is unstable, aborting.")
+            break
         if local_iter_num >= 5:
             mfu = raw_model.estimate_mfu(batch_size * gradient_accumulation_steps, dt)
             running_mfu = mfu if running_mfu == -1.0 else 0.9*running_mfu + 0.1*mfu
-        print(f"iter {iter_num}: loss {lossf:.4f}, time {dt*1000:.2f}ms, mfu {running_mfu*100:.2f}%")
+        norm_str = f", grad_norm {grad_norm:.3f}" if grad_norm is not None else ""
+        print(f"iter {iter_num}: loss {lossf:.4f}, time {dt*1000:.2f}ms, mfu {running_mfu*100:.2f}%{norm_str}")
+        with open(os.path.join(out_dir, 'loss_log.jsonl'), 'a') as f:
+            f.write(json.dumps({'type': 'train', 'iter': iter_num, 'loss': lossf}) + '\n')
     iter_num += 1
     local_iter_num += 1
 

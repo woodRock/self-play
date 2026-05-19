@@ -6,7 +6,7 @@ eval_interval = 250
 eval_iters = 200
 log_interval = 10
 
-always_save_checkpoint = False
+always_save_checkpoint = True  # save every eval so cluster runs can always resume
 
 wandb_log = False
 wandb_project = 'babylm'
@@ -14,12 +14,12 @@ wandb_run_name = 'selfplay'
 
 dataset = 'babylm'
 gradient_accumulation_steps = 2
-batch_size = 32
-block_size = 256
+batch_size = 16
+block_size = 128
 
-n_layer = 8
-n_head = 8
-n_embd = 512
+n_layer = 6
+n_head = 6
+n_embd = 384
 dropout = 0.1
 bias = False
 
