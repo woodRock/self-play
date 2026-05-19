@@ -1,6 +1,5 @@
 # Self-play SFT on BLiMP, starting from the self-play pretrained model.
-# Both pretraining and fine-tuning use self-play — tests whether the two
-# effects compound.
+# Migrated to universal sft_dataset / sft_data_dir interface.
 
 out_dir      = 'out-blimp-selfplay-sft-from-sp'
 pretrain_dir = 'out-babylm-selfplay'
@@ -16,7 +15,10 @@ wandb_log      = False
 wandb_project  = 'blimp-sft'
 wandb_run_name = 'selfplay-sft-from-sp'
 
-dataset     = 'blimp'
+sft_dataset        = 'blimp'
+sft_data_dir       = 'data/blimp'
+sft_loss_mask_mode = 'all_tokens'
+
 gradient_accumulation_steps = 1
 batch_size  = 16
 block_size  = 128

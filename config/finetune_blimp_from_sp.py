@@ -1,5 +1,5 @@
 # Baseline SFT on BLiMP, starting from the self-play pretrained model.
-# Isolates the effect of self-play pretraining on BLiMP fine-tuning.
+# Migrated to universal sft_dataset / sft_data_dir interface.
 
 out_dir      = 'out-blimp-sft-from-sp'
 pretrain_dir = 'out-babylm-selfplay'
@@ -15,7 +15,10 @@ wandb_log      = False
 wandb_project  = 'blimp-sft'
 wandb_run_name = 'baseline-sft-from-sp'
 
-dataset     = 'blimp'
+sft_dataset        = 'blimp'
+sft_data_dir       = 'data/blimp'
+sft_loss_mask_mode = 'all_tokens'
+
 gradient_accumulation_steps = 1
 batch_size  = 16
 block_size  = 128

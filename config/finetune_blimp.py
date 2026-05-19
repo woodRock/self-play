@@ -1,5 +1,5 @@
 # Baseline SFT on BLiMP grammatical sentences.
-# Loads the pretrained BabyLM checkpoint and fine-tunes with a standard LM objective.
+# Migrated to universal sft_dataset / sft_data_dir interface.
 
 out_dir      = 'out-blimp-sft'
 pretrain_dir = 'out-babylm'
@@ -15,7 +15,10 @@ wandb_log      = False
 wandb_project  = 'blimp-sft'
 wandb_run_name = 'baseline-sft'
 
-dataset     = 'blimp'
+sft_dataset        = 'blimp'
+sft_data_dir       = 'data/blimp'
+sft_loss_mask_mode = 'all_tokens'
+
 gradient_accumulation_steps = 1
 batch_size  = 16
 block_size  = 128
