@@ -52,22 +52,27 @@ def submit(cmd, label=''):
         print(f"ERROR submitting task:\n{result.stderr}")
         sys.exit(1)
     output = _strip_ansi(result.stdout + result.stderr)
-    # find the last integer in the output — that's the task ID
     nums = re.findall(r'\d+', output)
     if not nums:
-        print(f"ERROR: could not parse task ID from output: {repr(result.stdout + result.stderr)}")
-        sys.exit(1)
-    task_id = int(nums[-1])
+        # fallback: parse the task list and take the highest (most recent) ID
+        lr = subprocess.run(['task', '-l'], capture_output=True, text=True)
+        lo = _strip_ansi(lr.stdout)
+        ids = [int(p[0]) for p in (l.split() for l in lo.splitlines() if l.split() and l.split()[0].isdigit())]
+        if not ids:
+            print(f"ERROR: could not determine task ID. Submit output: {repr(result.stdout + result.stderr)}")
+            sys.exit(1)
+        task_id = max(ids)
+    else:
+        task_id = int(nums[-1])
     print(f"  → task {task_id}")
     return task_id
 
 
 def wait(task_id, label=''):
-    """Block until a task spooler task finishes. Returns its stdout."""
+    """Block until a task spooler task finishes. Returns its saved output."""
     print(f"Waiting for task {task_id}{' (' + label + ')' if label else ''}...")
-    result = subprocess.run(['task', '-f', str(task_id)], capture_output=True, text=True)
-    if result.returncode != 0:
-        print(f"WARNING: task {task_id} exited with code {result.returncode}")
+    subprocess.run(['task', '-w', str(task_id)])
+    result = subprocess.run(['task', '-o', str(task_id)], capture_output=True, text=True)
     return result.stdout + result.stderr
 
 # ---------------------------------------------------------------------------
