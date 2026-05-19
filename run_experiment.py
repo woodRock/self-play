@@ -177,6 +177,16 @@ def main():
     init_from = 'resume' if args.resume else 'scratch'
 
     # ------------------------------------------------------------------
+    # 0. Clean up stale logs from any previous run (skip if resuming)
+    # ------------------------------------------------------------------
+    if not args.eval_only and not args.resume:
+        for out_dir in (BASELINE_OUT_DIR, SELFPLAY_OUT_DIR):
+            log = os.path.join(out_dir, 'loss_log.jsonl')
+            if os.path.exists(log):
+                os.remove(log)
+                print(f"Removed stale {log}")
+
+    # ------------------------------------------------------------------
     # 1. Train
     # ------------------------------------------------------------------
     if not args.eval_only:
