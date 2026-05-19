@@ -72,6 +72,7 @@ backend = 'nccl'
 device = 'cuda'
 dtype = 'bfloat16' if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else ('float16' if torch.cuda.is_available() else 'float32')
 compile = True
+manual_seed = 1337 # base random seed; override with --manual_seed=N for multi-seed runs
 # self-play specific
 opponent_update_interval = 50  # copy current weights to opponent every N iters
 selfplay_lambda = 0.5           # blend: (1-λ)*standard_loss + λ*selfplay_loss
@@ -103,7 +104,7 @@ print(f"tokens per iteration will be: {tokens_per_iter:,}")
 
 if master_process:
     os.makedirs(out_dir, exist_ok=True)
-torch.manual_seed(1337 + seed_offset)
+torch.manual_seed(manual_seed + seed_offset)
 torch.backends.cuda.matmul.allow_tf32 = True
 torch.backends.cudnn.allow_tf32 = True
 device_type = 'cuda' if 'cuda' in device else ('mps' if 'mps' in device else 'cpu')

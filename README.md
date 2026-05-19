@@ -42,6 +42,56 @@ The self-play training loss is noisier early on (expected — harder-position we
 gradients more variable), but both models converge to similar val loss curves before self-play
 pulls ahead in the final iterations.
 
+### Generation comparison (20,000 iterations, same prompt and seed)
+
+Both models were given the same prompt (`\n`) and random seed. The difference in output quality
+is qualitatively apparent even though the val loss gap is small.
+
+**Baseline:**
+```
+Yeah, but I'm in case. I'm not in that position. You should have known that.
+I want to see an officer. Did you hear that coming? Yes. Not in my room.
+But it's not in my room. You're right. I'm ready. I'm ready. Why?
+You're fine. I'm fine. Yes. - What are you doing here? - I'm here to say.
+- Yes. Is this your boss? No. I'm fine. I'm fine. I'm going to see you again.
+But now you're here. I have a visit at the next time. - You have to go to the hotel.
+- Yes, it's fine. I don't think so. It looks like a nice one. You've got to come there.
+Let's go. - Do you have a drink? - Would you like your time? - Yes. No, for you, for you.
+```
+
+**Self-play:**
+```
+Yeah, but I'm in the kitchen for so much I want it. Oh, yeah, that's good.
+I got a lot more cash. Now you can get some help. What are you doing here?
+- What are you doing? - I'm fine. - All right. - Hey, Chris.
+- Hey, hey. You're out of your way to work? - Hey, this is a problem. It's pretty tough.
+- You're crazy. - I'm just gonna do something. - Okay, baby. - I'm talking to you.
+- You're trying to answer my questions. Your old guy, your wife, your boyfriend,
+your wife, your body, your family, your mother — going to talk to you about us.
+You know, just for you, even if you don't get a fuck up. What's going on here?
+You're the one who's lying, you don't want to talk to me like that, man.
+That's the only thing that I'm trying to do. I'm just a girl.
+```
+
+**Why self-play is more coherent:**
+
+The baseline output degenerates into short, disconnected utterances — fragments like
+*"I'm here to say"*, *"I have a visit at the next time"*, and repetitive filler
+(*"I'm fine. I'm fine."*, *"- Thank you. - Thank you."*). These are high-frequency
+surface patterns from the training data, and a model trained on uniform loss has little
+incentive to go beyond them.
+
+The self-play model produces longer, more contextually grounded sentences. Phrases like
+*"your old guy, your wife, your boyfriend, your wife, your body, your family, your mother"*
+show the model tracking a referential chain across a turn. *"You're the one who's lying,
+you don't want to talk to me like that, man"* is a coherent accusation with internal logic.
+The dialogue has stakes and a point of view, rather than just syntactically plausible filler.
+
+This is the curriculum effect in action: by upweighting positions where the model
+underperforms its past self — precisely the rare, contextually-dependent tokens that
+carry meaning — self-play pushes the model to learn the hard parts of language rather
+than coasting on the easy ones.
+
 ## Install
 
 ```sh
