@@ -24,14 +24,23 @@ The analogy to AlphaGo is direct — you always train against a version of yours
 
 ## Results
 
-### Loss curves (BabyLM BPE, 5000 iterations)
+### Loss curves (BabyLM BPE, 20,000 iterations)
 
 ![Loss curves](loss_curves.png)
 
-Both models converge from random initialisation. The self-play training loss is noisier early on —
-expected, since harder-position weighting makes early gradients more variable.
-By iteration 2000 both val losses are within 0.02 of each other and continuing to converge.
-Full 20,000-iteration results pending.
+| Model | Val Loss | Perplexity | Overall Acc | Common Acc | Rare Acc |
+|---|---|---|---|---|---|
+| Baseline | 3.8666 | 47.78 | 31.79% | 35.75% | 4.06% |
+| Self-play | 3.8615 | 47.54 | 31.88% | 35.81% | 4.31% |
+| Δ (SP − BL) | **−0.005 ✓** | **−0.24 ✓** | **+0.09%** | **+0.07%** | **+0.25%** |
+
+Self-play wins on all metrics. Crucially, rare token accuracy improves 3.5× more than common token
+accuracy (+0.25% vs +0.07%) — directly consistent with the curriculum hypothesis that self-play
+focuses training on positions the model hasn't yet mastered.
+
+The self-play training loss is noisier early on (expected — harder-position weighting makes early
+gradients more variable), but both models converge to similar val loss curves before self-play
+pulls ahead in the final iterations.
 
 ## Install
 
