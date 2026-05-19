@@ -1,5 +1,7 @@
 # nanoGPT + Self-Play
 
+![Self-play explainer](meme.png)
+
 A GPT trained with a self-play pretraining mode inspired by AlphaGo.
 Built on [nanoGPT](https://github.com/karpathy/nanoGPT) by Andrej Karpathy.
 
