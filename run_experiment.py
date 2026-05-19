@@ -13,6 +13,7 @@ Usage:
 """
 
 import argparse
+import re
 import subprocess
 import os
 import json
@@ -38,6 +39,10 @@ EVAL_OUTPUT_FILE = 'eval_results.txt'
 # Task spooler helpers
 # ---------------------------------------------------------------------------
 
+def _strip_ansi(s):
+    return re.sub(r'\x1b\[[0-9;]*[A-Za-z]', '', s)
+
+
 def submit(cmd, label=''):
     """Submit a command via the task spooler. Returns the task ID (int)."""
     full = ['task', '-G', '1', '-m', '45'] + cmd
@@ -46,7 +51,13 @@ def submit(cmd, label=''):
     if result.returncode != 0:
         print(f"ERROR submitting task:\n{result.stderr}")
         sys.exit(1)
-    task_id = int(result.stdout.strip().split()[-1])
+    output = _strip_ansi(result.stdout + result.stderr)
+    # find the last integer in the output — that's the task ID
+    nums = re.findall(r'\d+', output)
+    if not nums:
+        print(f"ERROR: could not parse task ID from output: {repr(result.stdout + result.stderr)}")
+        sys.exit(1)
+    task_id = int(nums[-1])
     print(f"  → task {task_id}")
     return task_id
 
