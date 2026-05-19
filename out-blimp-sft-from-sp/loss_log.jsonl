@@ -1,0 +1,112 @@
+{"type": "val", "iter": 0, "train_loss": 5.707663059234619, "val_loss": 6.032937049865723}
+{"type": "train", "iter": 0, "loss": 5.729035377502441}
+{"type": "train", "iter": 10, "loss": 5.361274719238281}
+{"type": "train", "iter": 20, "loss": 5.061713218688965}
+{"type": "train", "iter": 30, "loss": 4.975920677185059}
+{"type": "train", "iter": 40, "loss": 4.476085662841797}
+{"type": "train", "iter": 50, "loss": 4.112971782684326}
+{"type": "train", "iter": 60, "loss": 3.462204933166504}
+{"type": "train", "iter": 70, "loss": 3.515282154083252}
+{"type": "train", "iter": 80, "loss": 3.549708604812622}
+{"type": "train", "iter": 90, "loss": 3.2714171409606934}
+{"type": "val", "iter": 100, "train_loss": 3.0479767322540283, "val_loss": 3.720041275024414}
+{"type": "train", "iter": 100, "loss": 3.3015546798706055}
+{"type": "train", "iter": 110, "loss": 2.8430306911468506}
+{"type": "train", "iter": 120, "loss": 3.127267837524414}
+{"type": "train", "iter": 130, "loss": 2.935309886932373}
+{"type": "train", "iter": 140, "loss": 3.0445680618286133}
+{"type": "train", "iter": 150, "loss": 2.7322912216186523}
+{"type": "train", "iter": 160, "loss": 2.9193122386932373}
+{"type": "train", "iter": 170, "loss": 2.7352380752563477}
+{"type": "train", "iter": 180, "loss": 2.774556875228882}
+{"type": "train", "iter": 190, "loss": 2.7778587341308594}
+{"type": "val", "iter": 200, "train_loss": 2.6508002281188965, "val_loss": 3.5395078659057617}
+{"type": "train", "iter": 200, "loss": 2.6279239654541016}
+{"type": "train", "iter": 210, "loss": 2.666928768157959}
+{"type": "train", "iter": 220, "loss": 2.8057188987731934}
+{"type": "train", "iter": 230, "loss": 2.7545371055603027}
+{"type": "train", "iter": 240, "loss": 2.544145345687866}
+{"type": "train", "iter": 250, "loss": 2.4351561069488525}
+{"type": "train", "iter": 260, "loss": 2.634392499923706}
+{"type": "train", "iter": 270, "loss": 2.5995917320251465}
+{"type": "train", "iter": 280, "loss": 2.6563358306884766}
+{"type": "train", "iter": 290, "loss": 2.550185441970825}
+{"type": "val", "iter": 300, "train_loss": 2.5104305744171143, "val_loss": 3.5768990516662598}
+{"type": "train", "iter": 300, "loss": 2.4539027214050293}
+{"type": "train", "iter": 310, "loss": 2.534742832183838}
+{"type": "train", "iter": 320, "loss": 2.436246395111084}
+{"type": "train", "iter": 330, "loss": 2.6124749183654785}
+{"type": "train", "iter": 340, "loss": 2.5080647468566895}
+{"type": "train", "iter": 350, "loss": 2.5724616050720215}
+{"type": "train", "iter": 360, "loss": 2.5767982006073}
+{"type": "train", "iter": 370, "loss": 2.646310806274414}
+{"type": "train", "iter": 380, "loss": 2.55981183052063}
+{"type": "train", "iter": 390, "loss": 2.346789598464966}
+{"type": "val", "iter": 400, "train_loss": 2.449618101119995, "val_loss": 3.547598361968994}
+{"type": "train", "iter": 400, "loss": 2.4786458015441895}
+{"type": "train", "iter": 410, "loss": 2.4484357833862305}
+{"type": "train", "iter": 420, "loss": 2.506211519241333}
+{"type": "train", "iter": 430, "loss": 2.489034652709961}
+{"type": "train", "iter": 440, "loss": 2.5154457092285156}
+{"type": "train", "iter": 450, "loss": 2.4322357177734375}
+{"type": "train", "iter": 460, "loss": 2.4763176441192627}
+{"type": "train", "iter": 470, "loss": 2.3733506202697754}
+{"type": "train", "iter": 480, "loss": 2.5741546154022217}
+{"type": "train", "iter": 490, "loss": 2.547416925430298}
+{"type": "val", "iter": 500, "train_loss": 2.3867554664611816, "val_loss": 3.4775867462158203}
+{"type": "train", "iter": 500, "loss": 2.346369504928589}
+{"type": "train", "iter": 510, "loss": 2.593064546585083}
+{"type": "train", "iter": 520, "loss": 2.4310319423675537}
+{"type": "train", "iter": 530, "loss": 2.4224514961242676}
+{"type": "train", "iter": 540, "loss": 2.495948314666748}
+{"type": "train", "iter": 550, "loss": 2.3807835578918457}
+{"type": "train", "iter": 560, "loss": 2.3395705223083496}
+{"type": "train", "iter": 570, "loss": 2.359379291534424}
+{"type": "train", "iter": 580, "loss": 2.3537304401397705}
+{"type": "train", "iter": 590, "loss": 2.490292549133301}
+{"type": "val", "iter": 600, "train_loss": 2.355945110321045, "val_loss": 3.581070899963379}
+{"type": "train", "iter": 600, "loss": 2.462979555130005}
+{"type": "train", "iter": 610, "loss": 2.3190596103668213}
+{"type": "train", "iter": 620, "loss": 2.3853907585144043}
+{"type": "train", "iter": 630, "loss": 2.464142322540283}
+{"type": "train", "iter": 640, "loss": 2.5250964164733887}
+{"type": "train", "iter": 650, "loss": 2.3837947845458984}
+{"type": "train", "iter": 660, "loss": 2.3918237686157227}
+{"type": "train", "iter": 670, "loss": 2.4307920932769775}
+{"type": "train", "iter": 680, "loss": 2.401773452758789}
+{"type": "train", "iter": 690, "loss": 2.3199410438537598}
+{"type": "val", "iter": 700, "train_loss": 2.3531405925750732, "val_loss": 3.5285303592681885}
+{"type": "train", "iter": 700, "loss": 2.5030508041381836}
+{"type": "train", "iter": 710, "loss": 2.3055243492126465}
+{"type": "train", "iter": 720, "loss": 2.3313143253326416}
+{"type": "train", "iter": 730, "loss": 2.408249616622925}
+{"type": "train", "iter": 740, "loss": 2.387507200241089}
+{"type": "train", "iter": 750, "loss": 2.401993989944458}
+{"type": "train", "iter": 760, "loss": 2.3995065689086914}
+{"type": "train", "iter": 770, "loss": 2.284942626953125}
+{"type": "train", "iter": 780, "loss": 2.3545806407928467}
+{"type": "train", "iter": 790, "loss": 2.226503372192383}
+{"type": "val", "iter": 800, "train_loss": 2.342250347137451, "val_loss": 3.5204737186431885}
+{"type": "train", "iter": 800, "loss": 2.4283881187438965}
+{"type": "train", "iter": 810, "loss": 2.3845083713531494}
+{"type": "train", "iter": 820, "loss": 2.3993349075317383}
+{"type": "train", "iter": 830, "loss": 2.2792327404022217}
+{"type": "train", "iter": 840, "loss": 2.3242452144622803}
+{"type": "train", "iter": 850, "loss": 2.404324531555176}
+{"type": "train", "iter": 860, "loss": 2.4521474838256836}
+{"type": "train", "iter": 870, "loss": 2.3785178661346436}
+{"type": "train", "iter": 880, "loss": 2.324089527130127}
+{"type": "train", "iter": 890, "loss": 2.4302539825439453}
+{"type": "val", "iter": 900, "train_loss": 2.333059310913086, "val_loss": 3.635629177093506}
+{"type": "train", "iter": 900, "loss": 2.4839205741882324}
+{"type": "train", "iter": 910, "loss": 2.472156524658203}
+{"type": "train", "iter": 920, "loss": 2.4078798294067383}
+{"type": "train", "iter": 930, "loss": 2.218174934387207}
+{"type": "train", "iter": 940, "loss": 2.440298557281494}
+{"type": "train", "iter": 950, "loss": 2.3837199211120605}
+{"type": "train", "iter": 960, "loss": 2.5351531505584717}
+{"type": "train", "iter": 970, "loss": 2.3107352256774902}
+{"type": "train", "iter": 980, "loss": 2.351465940475464}
+{"type": "train", "iter": 990, "loss": 2.320568084716797}
+{"type": "val", "iter": 1000, "train_loss": 2.3290207386016846, "val_loss": 3.5301032066345215}
+{"type": "train", "iter": 1000, "loss": 2.428534746170044}
