@@ -109,11 +109,19 @@ def evaluate(model, val_path, block_size, batch_size, eval_iters, common_ids):
     """
     data = np.memmap(val_path, dtype=np.uint16, mode='r')
 
-    total_loss = 0.0
+    # build a boolean lookup tensor: common_mask[token_id] = True if common
+    vocab_size = int(data.max()) + 1
+    common_mask = torch.zeros(max(vocab_size, max(common_ids) + 1), dtype=torch.bool, device=device)
+    for tid in common_ids:
+        common_mask[tid] = True
+
+    total_loss    = 0.0
     total_correct = 0
     total_tokens  = 0
-    freq_correct  = {True: 0, False: 0}
-    freq_total    = {True: 0, False: 0}
+    common_correct = 0
+    common_total   = 0
+    rare_correct   = 0
+    rare_total     = 0
 
     torch.manual_seed(args.seed)  # same batches for both models
 
@@ -128,28 +136,26 @@ def evaluate(model, val_path, block_size, batch_size, eval_iters, common_ids):
 
         total_loss += loss.item()
 
-        preds    = logits.argmax(dim=-1)          # [B, T]
-        correct  = (preds == y)                   # [B, T]
-        y_flat   = y.view(-1).tolist()
-        c_flat   = correct.view(-1).tolist()
+        preds   = logits.argmax(dim=-1)   # [B, T]
+        correct = (preds == y)            # [B, T]
+        is_com  = common_mask[y]          # [B, T] vectorised lookup
 
-        total_correct += sum(c_flat)
-        total_tokens  += len(c_flat)
-
-        for tok, corr in zip(y_flat, c_flat):
-            is_common = tok in common_ids
-            freq_correct[is_common] += int(corr)
-            freq_total[is_common]   += 1
+        total_correct  += correct.sum().item()
+        total_tokens   += correct.numel()
+        common_correct += (correct & is_com).sum().item()
+        common_total   += is_com.sum().item()
+        rare_correct   += (correct & ~is_com).sum().item()
+        rare_total     += (~is_com).sum().item()
 
     mean_loss = total_loss / eval_iters
     return {
         'loss':            mean_loss,
         'perplexity':      np.exp(mean_loss),
         'accuracy':        total_correct / total_tokens,
-        'common_accuracy': freq_correct[True]  / max(freq_total[True],  1),
-        'rare_accuracy':   freq_correct[False] / max(freq_total[False], 1),
-        'common_total':    freq_total[True],
-        'rare_total':      freq_total[False],
+        'common_accuracy': common_correct / max(common_total, 1),
+        'rare_accuracy':   rare_correct   / max(rare_total,   1),
+        'common_total':    common_total,
+        'rare_total':      rare_total,
     }
 
 

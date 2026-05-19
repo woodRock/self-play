@@ -211,6 +211,7 @@ def main():
         f'--baseline_dir={BASELINE_OUT_DIR}',
         f'--selfplay_dir={SELFPLAY_OUT_DIR}',
         '--eval_iters=200',
+        '--device=cuda',
     ]
     eval_task = submit(eval_cmd, label='evaluation')
     eval_output = wait(eval_task, label='evaluation')
