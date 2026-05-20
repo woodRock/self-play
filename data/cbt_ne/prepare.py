@@ -45,15 +45,20 @@ def _get(session, params, token=None):
     headers = {}
     if token:
         headers['Authorization'] = f'Bearer {token}'
-    for attempt in range(6):
+    for attempt in range(12):
         try:
             r = session.get(API_BASE, params=params, headers=headers, timeout=30)
+            if r.status_code == 429:
+                retry_after = int(r.headers.get('Retry-After', min(120, 15 * (attempt + 1))))
+                print(f"    Rate-limited — waiting {retry_after}s…", flush=True)
+                time.sleep(retry_after)
+                continue
             r.raise_for_status()
             return r.json()
         except (requests.RequestException, ValueError) as exc:
-            if attempt == 5:
-                raise RuntimeError(f"API request failed after 6 attempts: {exc}") from exc
-            wait = 2 ** attempt
+            if attempt == 11:
+                raise RuntimeError(f"API request failed after 12 attempts: {exc}") from exc
+            wait = min(60, 2 ** attempt)
             print(f"    Retrying in {wait}s ({exc})…", flush=True)
             time.sleep(wait)
 
@@ -63,6 +68,9 @@ def fetch_split(split_name, token=None):
     session = requests.Session()
     rows    = []
     offset  = 0
+
+    # Polite delay: 1 s anonymous, 0.2 s with token (higher rate limit tier)
+    inter_request_delay = 0.2 if token else 1.0
 
     # First request tells us the total row count
     data = _get(session, {
@@ -86,7 +94,7 @@ def fetch_split(split_name, token=None):
         offset += BATCH
         if offset % 5000 == 0:
             print(f"    {split_name}: {offset}/{total} fetched…", flush=True)
-        time.sleep(0.05)   # be polite; HF rate-limits anonymous callers
+        time.sleep(inter_request_delay)
 
     print(f"    done — {len(rows)} rows fetched", flush=True)
     return rows
