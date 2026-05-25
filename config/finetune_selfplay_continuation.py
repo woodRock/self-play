@@ -2,8 +2,8 @@
 # All positions are masked in (all_tokens), so self-play operates everywhere.
 # pretrain_dir and out_dir are overridden per-seed by the orchestration script.
 
-out_dir      = 'out-cont-bl-sft-sp'
-pretrain_dir = 'out-babylm'
+out_dir      = 'outputs/cont/bl-sft-sp'
+pretrain_dir = 'outputs/babylm/baseline'
 init_from    = 'finetune'
 
 eval_interval = 100

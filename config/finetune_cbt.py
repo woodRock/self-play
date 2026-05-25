@@ -2,8 +2,8 @@
 # loss_mask = 'answer_only': only the blank-filling token(s) receive gradient.
 # pretrain_dir and out_dir are overridden per-seed by the orchestration script.
 
-out_dir      = 'out-cbt-bl-sft-bl'
-pretrain_dir = 'out-babylm'
+out_dir      = 'outputs/cbt/bl-sft-bl'
+pretrain_dir = 'outputs/babylm/baseline'
 init_from    = 'finetune'
 
 eval_interval = 100

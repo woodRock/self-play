@@ -2,8 +2,8 @@
 # Reformats the existing BabyLM training corpus as continuation pairs.
 # pretrain_dir and out_dir are overridden per-seed by the orchestration script.
 
-out_dir      = 'out-cont-bl-sft-bl'
-pretrain_dir = 'out-babylm'
+out_dir      = 'outputs/cont/bl-sft-bl'
+pretrain_dir = 'outputs/babylm/baseline'
 init_from    = 'finetune'
 
 eval_interval = 100

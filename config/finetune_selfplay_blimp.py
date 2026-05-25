@@ -1,8 +1,8 @@
 # Self-play SFT on BLiMP grammatical sentences.
 # Migrated to universal sft_dataset / sft_data_dir interface.
 
-out_dir      = 'out-blimp-selfplay-sft'
-pretrain_dir = 'out-babylm'
+out_dir      = 'outputs/blimp/selfplay-sft'
+pretrain_dir = 'outputs/babylm/baseline'
 init_from    = 'finetune'
 
 eval_interval = 100

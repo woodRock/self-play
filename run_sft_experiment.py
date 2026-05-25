@@ -4,10 +4,10 @@ Runs the full 2×2 BLiMP SFT experiment:
 
   Pretrain  ×  SFT method
   ────────────────────────────────────────────────────
-  Baseline  ×  Baseline SFT    →  out-blimp-sft
-  Baseline  ×  Self-play SFT   →  out-blimp-selfplay-sft
-  Self-play ×  Baseline SFT    →  out-blimp-sft-from-sp
-  Self-play ×  Self-play SFT   →  out-blimp-selfplay-sft-from-sp
+  Baseline  ×  Baseline SFT    →  outputs/blimp/sft
+  Baseline  ×  Self-play SFT   →  outputs/blimp/selfplay-sft
+  Self-play ×  Baseline SFT    →  outputs/blimp/sft-from-sp
+  Self-play ×  Self-play SFT   →  outputs/blimp/selfplay-sft-from-sp
 
 Then evaluates all four against the two pretrained (zero-shot) baselines.
 
@@ -28,23 +28,23 @@ import sys
 # ---------------------------------------------------------------------------
 
 JOBS = [
-    ('BL→SFT-BL',  'train_sft.py',          'config/finetune_blimp.py',                  'out-blimp-sft'),
-    ('BL→SFT-SP',  'train_selfplay_sft.py',  'config/finetune_selfplay_blimp.py',         'out-blimp-selfplay-sft'),
-    ('SP→SFT-BL',  'train_sft.py',           'config/finetune_blimp_from_sp.py',          'out-blimp-sft-from-sp'),
-    ('SP→SFT-SP',  'train_selfplay_sft.py',  'config/finetune_selfplay_blimp_from_sp.py', 'out-blimp-selfplay-sft-from-sp'),
+    ('BL→SFT-BL',  'train_sft.py',          'config/finetune_blimp.py',                  'outputs/blimp/sft'),
+    ('BL→SFT-SP',  'train_selfplay_sft.py',  'config/finetune_selfplay_blimp.py',         'outputs/blimp/selfplay-sft'),
+    ('SP→SFT-BL',  'train_sft.py',           'config/finetune_blimp_from_sp.py',          'outputs/blimp/sft-from-sp'),
+    ('SP→SFT-SP',  'train_selfplay_sft.py',  'config/finetune_selfplay_blimp_from_sp.py', 'outputs/blimp/selfplay-sft-from-sp'),
 ]
 
 # Models passed to eval_blimp.py (zero-shot pretrained + all four fine-tuned)
 EVAL_MODELS = [
-    'Pretrained-BL=out-babylm',
-    'Pretrained-SP=out-babylm-selfplay',
-    'BL→SFT-BL=out-blimp-sft',
-    'BL→SFT-SP=out-blimp-selfplay-sft',
-    'SP→SFT-BL=out-blimp-sft-from-sp',
-    'SP→SFT-SP=out-blimp-selfplay-sft-from-sp',
+    'Pretrained-BL=outputs/babylm/baseline',
+    'Pretrained-SP=outputs/babylm/selfplay',
+    'BL→SFT-BL=outputs/blimp/sft',
+    'BL→SFT-SP=outputs/blimp/selfplay-sft',
+    'SP→SFT-BL=outputs/blimp/sft-from-sp',
+    'SP→SFT-SP=outputs/blimp/selfplay-sft-from-sp',
 ]
 
-EVAL_RESULTS_FILE = 'blimp_results.txt'
+EVAL_RESULTS_FILE = 'results/blimp_results.txt'
 
 # ---------------------------------------------------------------------------
 # Task spooler helpers (same as run_experiment.py)
@@ -103,6 +103,7 @@ def main():
     args = parser.parse_args()
 
     init_from = 'resume' if args.resume else 'finetune'
+    os.makedirs('results', exist_ok=True)
 
     # ------------------------------------------------------------------
     # 0. Clean stale loss logs for fresh runs

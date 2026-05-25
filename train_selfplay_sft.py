@@ -8,7 +8,7 @@ non-answer positions do not dominate the weighting.
 
 Usage:
     python train_selfplay_sft.py config/finetune_selfplay_cbt.py \\
-        --pretrain_dir=out-babylm-s1 --manual_seed=1
+        --pretrain_dir=outputs/babylm/baseline-s1 --manual_seed=1
 """
 
 import os
@@ -31,8 +31,8 @@ from model import GPTConfig, GPT
 
 # -----------------------------------------------------------------------------
 # default config
-out_dir      = 'out-selfplay-sft'
-pretrain_dir = 'out-babylm'
+out_dir      = 'outputs/selfplay-sft'
+pretrain_dir = 'outputs/babylm/baseline'
 eval_interval = 100
 log_interval  = 10
 eval_iters    = 50

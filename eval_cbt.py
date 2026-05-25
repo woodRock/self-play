@@ -6,7 +6,7 @@ position (sum of log-probabilities of candidate tokens given the context).
 The candidate with the highest score is the prediction.
 
 Usage:
-    python eval_cbt.py --model_dir out-cbt-bl-sft-bl-s01 \\
+    python eval_cbt.py --model_dir outputs/cbt/bl_sft_bl-s01 \\
                        --data_dir  data/cbt_ne \\
                        --manifest  results/cbt/BL_SFT_BL_s01.json \\
                        --seed 1 --condition BL_SFT_BL \\

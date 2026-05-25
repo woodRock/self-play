@@ -1,8 +1,8 @@
 # Baseline SFT on BLiMP, starting from the self-play pretrained model.
 # Migrated to universal sft_dataset / sft_data_dir interface.
 
-out_dir      = 'out-blimp-sft-from-sp'
-pretrain_dir = 'out-babylm-selfplay'
+out_dir      = 'outputs/blimp/sft-from-sp'
+pretrain_dir = 'outputs/babylm/selfplay'
 init_from    = 'finetune'
 
 eval_interval = 100

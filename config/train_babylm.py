@@ -6,7 +6,7 @@
 #
 # Measured ~5-8s/iter on M2 Air; 5000 iters ≈ 7-11 hours
 
-out_dir = 'out-babylm'
+out_dir = 'outputs/babylm/baseline'
 eval_interval = 250
 eval_iters = 200
 log_interval = 10

@@ -7,7 +7,7 @@ is a {0,1} float tensor indicating which positions contribute to the loss.
 
 Usage:
     python train_sft.py config/finetune_blimp.py
-    python train_sft.py config/finetune_cbt.py --pretrain_dir=out-babylm-s1 --manual_seed=1
+    python train_sft.py config/finetune_cbt.py --pretrain_dir=outputs/babylm/baseline-s1 --manual_seed=1
 """
 
 import os
@@ -29,8 +29,8 @@ from model import GPTConfig, GPT
 
 # -----------------------------------------------------------------------------
 # default config — fine-tuning specific
-out_dir      = 'out-sft'
-pretrain_dir = 'out-babylm'
+out_dir      = 'outputs/sft'
+pretrain_dir = 'outputs/babylm/baseline'
 eval_interval = 100
 log_interval  = 10
 eval_iters    = 50

@@ -1,7 +1,7 @@
 # self-play BPE model trained on BabyLM 10M
 # identical architecture to train_babylm.py — only out_dir and wandb differ
 
-out_dir = 'out-babylm-selfplay'
+out_dir = 'outputs/babylm/selfplay'
 eval_interval = 250
 eval_iters = 200
 log_interval = 10

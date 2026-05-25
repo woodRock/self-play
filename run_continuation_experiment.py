@@ -6,8 +6,8 @@ Dispatch the 2x2 BabyLM continuation SFT experiment across 30 seeds.
   ─────────────────────────────────────────────────────────────
   BL  × SFT-BL   (train_sft.py          + finetune_continuation.py)
   BL  × SFT-SP   (train_selfplay_sft.py + finetune_selfplay_continuation.py)
-  SP  × SFT-BL   (train_sft.py          + finetune_continuation.py, pretrain=out-babylm-selfplay-s{seed})
-  SP  × SFT-SP   (train_selfplay_sft.py + finetune_selfplay_continuation.py, pretrain=out-babylm-selfplay-s{seed})
+  SP  × SFT-BL   (train_sft.py          + finetune_continuation.py,          pretrain=outputs/babylm/selfplay-s{seed})
+  SP  × SFT-SP   (train_selfplay_sft.py + finetune_selfplay_continuation.py, pretrain=outputs/babylm/selfplay-s{seed})
 
 Generates 500 continuations per model for diversity evaluation.
 
@@ -24,18 +24,18 @@ import sys
 
 CONDITIONS = [
     ('BL_SFT_BL', 'train_sft.py',         'config/finetune_continuation.py',
-     'out-babylm-s{seed}'),
+     'outputs/babylm/baseline-s{seed}'),
     ('BL_SFT_SP', 'train_selfplay_sft.py', 'config/finetune_selfplay_continuation.py',
-     'out-babylm-s{seed}'),
+     'outputs/babylm/baseline-s{seed}'),
     ('SP_SFT_BL', 'train_sft.py',         'config/finetune_continuation.py',
-     'out-babylm-selfplay-s{seed}'),
+     'outputs/babylm/selfplay-s{seed}'),
     ('SP_SFT_SP', 'train_selfplay_sft.py', 'config/finetune_selfplay_continuation.py',
-     'out-babylm-selfplay-s{seed}'),
+     'outputs/babylm/selfplay-s{seed}'),
 ]
 
 
 def out_dir(cond, seed):
-    return f'out-cont-{cond.lower()}-s{seed:02d}'
+    return f'outputs/cont/{cond.lower()}-s{seed:02d}'
 
 
 def manifest_path(cond, seed):
@@ -94,6 +94,7 @@ def main():
     args = parser.parse_args()
 
     os.makedirs('results/continuation', exist_ok=True)
+    os.makedirs('outputs/cont', exist_ok=True)
 
     all_train_ids = []
     all_eval_cmds = []

@@ -32,7 +32,7 @@ from model import GPTConfig, GPT
 
 # -----------------------------------------------------------------------------
 # default config values (mirrors train.py; shakespeare_char config overrides these)
-out_dir = 'out-selfplay'
+out_dir = 'outputs/selfplay'
 eval_interval = 250
 log_interval = 10
 eval_iters = 200

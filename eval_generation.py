@@ -9,7 +9,7 @@ Samples 500 prompts (64-token context) from BabyLM validation, generates
   - mean_len_to_repeat (mean generation length before first 4-gram repetition)
 
 Usage:
-    python eval_generation.py --model_dir out-cont-bl-sft-bl-s01 \\
+    python eval_generation.py --model_dir outputs/cont/bl_sft_bl-s01 \\
                               --data_dir  data/babylm \\
                               --manifest  results/continuation/BL_SFT_BL_s01.json \\
                               --seed 1 --condition BL_SFT_BL \\

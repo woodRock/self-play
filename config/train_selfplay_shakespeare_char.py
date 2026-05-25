@@ -1,6 +1,6 @@
 # self-play character-level model trained on Tiny Shakespeare
 
-out_dir = 'out-selfplay-shakespeare-char'
+out_dir = 'outputs/shakespeare/selfplay-char'
 eval_interval = 250
 eval_iters = 200
 log_interval = 10

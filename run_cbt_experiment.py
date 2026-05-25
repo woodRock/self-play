@@ -6,8 +6,8 @@ Dispatch the 2x2 CBT-NE SFT experiment across 30 seeds.
   ─────────────────────────────────────────────────────────────
   BL  × SFT-BL   (train_sft.py            + finetune_cbt.py)
   BL  × SFT-SP   (train_selfplay_sft.py   + finetune_selfplay_cbt.py)
-  SP  × SFT-BL   (train_sft.py            + finetune_cbt.py,       pretrain=out-babylm-selfplay)
-  SP  × SFT-SP   (train_selfplay_sft.py   + finetune_selfplay_cbt.py, pretrain=out-babylm-selfplay)
+  SP  × SFT-BL   (train_sft.py            + finetune_cbt.py,           pretrain=outputs/babylm/selfplay)
+  SP  × SFT-SP   (train_selfplay_sft.py   + finetune_selfplay_cbt.py,  pretrain=outputs/babylm/selfplay)
 
 Usage:
     python run_cbt_experiment.py -n 30 --dry-run   # print task-spooler commands
@@ -28,18 +28,18 @@ import sys
 # ---------------------------------------------------------------------------
 CONDITIONS = [
     ('BL_SFT_BL', 'train_sft.py',          'config/finetune_cbt.py',
-     'out-babylm-s{seed}'),
+     'outputs/babylm/baseline-s{seed}'),
     ('BL_SFT_SP', 'train_selfplay_sft.py',  'config/finetune_selfplay_cbt.py',
-     'out-babylm-s{seed}'),
+     'outputs/babylm/baseline-s{seed}'),
     ('SP_SFT_BL', 'train_sft.py',          'config/finetune_cbt.py',
-     'out-babylm-selfplay-s{seed}'),
+     'outputs/babylm/selfplay-s{seed}'),
     ('SP_SFT_SP', 'train_selfplay_sft.py',  'config/finetune_selfplay_cbt.py',
-     'out-babylm-selfplay-s{seed}'),
+     'outputs/babylm/selfplay-s{seed}'),
 ]
 
 
 def out_dir(cond, seed):
-    return f'out-cbt-{cond.lower()}-s{seed:02d}'
+    return f'outputs/cbt/{cond.lower()}-s{seed:02d}'
 
 
 def manifest_path(cond, seed):
@@ -108,6 +108,7 @@ def main():
     args = parser.parse_args()
 
     os.makedirs('results/cbt', exist_ok=True)
+    os.makedirs('outputs/cbt', exist_ok=True)
 
     all_train_ids = []  # (task_id, label)
     all_eval_cmds = []  # (cmd, label, dep_task_id)

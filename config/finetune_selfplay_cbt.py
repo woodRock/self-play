@@ -2,8 +2,8 @@
 # Self-play reweighting is applied only at the answer-slot position(s).
 # pretrain_dir and out_dir are overridden per-seed by the orchestration script.
 
-out_dir      = 'out-cbt-bl-sft-sp'
-pretrain_dir = 'out-babylm'
+out_dir      = 'outputs/cbt/bl-sft-sp'
+pretrain_dir = 'outputs/babylm/baseline'
 init_from    = 'finetune'
 
 eval_interval = 100

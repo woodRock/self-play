@@ -9,8 +9,8 @@ Reports:
   - Side-by-side generation from the same prompt and seed
 
 Usage:
-    python eval.py --baseline_dir=out-babylm-char --selfplay_dir=out-selfplay-babylm-char --device=mps
-    python eval.py --baseline_dir=out-shakespeare-char --selfplay_dir=out-selfplay-shakespeare-char --device=mps
+    python eval.py --baseline_dir=outputs/babylm/baseline-char --selfplay_dir=outputs/babylm/selfplay-char --device=mps
+    python eval.py --baseline_dir=outputs/shakespeare/baseline-char --selfplay_dir=outputs/shakespeare/selfplay-char --device=mps
 """
 
 import os
@@ -26,8 +26,8 @@ from model import GPTConfig, GPT
 # -----------------------------------------------------------------------------
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--baseline_dir',  default='out-babylm-char')
-parser.add_argument('--selfplay_dir',  default='out-selfplay-babylm-char')
+parser.add_argument('--baseline_dir',  default='outputs/babylm/baseline-char')
+parser.add_argument('--selfplay_dir',  default='outputs/babylm/selfplay-char')
 parser.add_argument('--device',        default='cpu')
 parser.add_argument('--eval_iters',    type=int,   default=200)
 parser.add_argument('--prompt',        default='\n',

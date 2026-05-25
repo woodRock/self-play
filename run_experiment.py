@@ -29,10 +29,10 @@ import matplotlib.pyplot as plt
 
 BASELINE_CONFIG  = 'config/train_babylm.py'
 SELFPLAY_CONFIG  = 'config/train_selfplay_babylm.py'
-BASELINE_OUT_DIR = 'out-babylm'
-SELFPLAY_OUT_DIR = 'out-babylm-selfplay'
-PLOT_FILE        = 'loss_curves.png'
-EVAL_OUTPUT_FILE = 'eval_results.txt'
+BASELINE_OUT_DIR = 'outputs/babylm/baseline'
+SELFPLAY_OUT_DIR = 'outputs/babylm/selfplay'
+PLOT_FILE        = 'results/loss_curves.png'
+EVAL_OUTPUT_FILE = 'results/eval_results.txt'
 
 # ---------------------------------------------------------------------------
 # Task spooler helpers
@@ -421,6 +421,7 @@ def main():
     seeds  = list(range(1, args.n_seeds + 1))
     multi  = args.n_seeds > 1
     init_from = 'resume' if args.resume else 'scratch'
+    os.makedirs('results', exist_ok=True)
 
     def bl_dir(seed):
         return f"{BASELINE_OUT_DIR}-s{seed}" if multi else BASELINE_OUT_DIR
@@ -493,7 +494,7 @@ def main():
 
     for eval_task, seed in eval_tasks:
         out = wait(eval_task, label=f'eval s{seed}')
-        fname = f"eval_results_s{seed}.txt" if multi else EVAL_OUTPUT_FILE
+        fname = f"results/eval_results_s{seed}.txt" if multi else EVAL_OUTPUT_FILE
         with open(fname, 'w') as f:
             f.write(out)
         if not multi:

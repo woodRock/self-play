@@ -10,9 +10,9 @@ Accepts any number of named models for side-by-side comparison:
 
 Usage:
     python eval_blimp.py \\
-        --models Pretrained=out-babylm \\
-                 SFT=out-blimp-sft \\
-                 SFT-SP=out-blimp-selfplay-sft \\
+        --models Pretrained=outputs/babylm/baseline \\
+                 SFT=outputs/blimp/sft \\
+                 SFT-SP=outputs/blimp/selfplay-sft \\
         --device cuda
 """
 
@@ -32,9 +32,9 @@ from model import GPTConfig, GPT
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--models', nargs='+', metavar='NAME=DIR',
-                    default=['Pretrained=out-babylm',
-                             'SFT=out-blimp-sft',
-                             'SFT-SP=out-blimp-selfplay-sft'],
+                    default=['Pretrained=outputs/babylm/baseline',
+                             'SFT=outputs/blimp/sft',
+                             'SFT-SP=outputs/blimp/selfplay-sft'],
                     help='Space-separated list of name=directory pairs')
 parser.add_argument('--device',    default='cuda')
 parser.add_argument('--batch_size', type=int, default=64)

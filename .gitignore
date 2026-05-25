@@ -16,5 +16,5 @@ data/cbt_ne/*.jsonl
 data/blimp/eval_pairs.jsonl
 
 # Experiment outputs (checkpoints, logs, results)
-out-*/
+outputs/
 results/
