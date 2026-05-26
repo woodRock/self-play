@@ -15,7 +15,9 @@ Usage:
 
 import os
 import sys
+import json
 import pickle
+import datetime
 import argparse
 import numpy as np
 import torch
@@ -38,6 +40,8 @@ parser.add_argument('--top_k',         type=int,   default=200)
 parser.add_argument('--seed',          type=int,   default=1337)
 parser.add_argument('--common_threshold', type=float, default=0.8,
                     help='Cumulative frequency threshold that defines "common" characters (default 0.80).')
+parser.add_argument('--json_out',      default=None,
+                    help='If set, write key metrics as a JSON file to this path.')
 args = parser.parse_args()
 
 device = args.device
@@ -307,3 +311,23 @@ print(generate(model_sp, encode, decode, args.prompt,
                args.max_new_tokens, args.temperature, args.top_k, args.seed))
 
 print('═' * W)
+
+if args.json_out:
+    manifest = {
+        'baseline_dir':  args.baseline_dir,
+        'selfplay_dir':  args.selfplay_dir,
+        'baseline_iter': iter_bl,
+        'selfplay_iter': iter_sp,
+        'baseline': {k: float(v) for k, v in results_bl.items()},
+        'selfplay': {k: float(v) for k, v in results_sp.items()},
+        'delta': {
+            'accuracy':        float(sp_over_delta),
+            'common_accuracy': float(sp_comm_delta),
+            'rare_accuracy':   float(sp_rare_delta),
+        },
+        'timestamp': datetime.datetime.now().isoformat(),
+    }
+    os.makedirs(os.path.dirname(os.path.abspath(args.json_out)), exist_ok=True)
+    with open(args.json_out, 'w') as f:
+        json.dump(manifest, f, indent=2)
+    print(f"Saved JSON results to {args.json_out}")
