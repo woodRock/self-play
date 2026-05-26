@@ -194,6 +194,14 @@ def main():
             if os.path.exists(json_out) and not args.eval_only:
                 continue
 
+            # Skip if either checkpoint is missing (training didn't complete)
+            bl_ckpt = os.path.join(bl_dir, 'ckpt.pt')
+            sp_ckpt = os.path.join(sp_dir, 'ckpt.pt')
+            if not os.path.exists(bl_ckpt) or not os.path.exists(sp_ckpt):
+                missing = [p for p in (bl_ckpt, sp_ckpt) if not os.path.exists(p)]
+                print(f"  [SKIP] {scale}-s{seed}: missing checkpoints: {missing}")
+                continue
+
             eval_cmd = [
                 'python3', 'eval.py',
                 f'--baseline_dir={bl_dir}',
