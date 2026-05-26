@@ -229,7 +229,6 @@ def main():
 
     print("\nAll done.")
     print("Run:  python plot_scaling.py")
-    print("      python analyze_cbt.py --results_dir results/cbt")
 
 
 if __name__ == '__main__':
