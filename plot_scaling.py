@@ -67,22 +67,27 @@ def extract(records, key):
 # ---------------------------------------------------------------------------
 
 def main():
+    scale_names = [s for s, _, _ in SCALES]
     parser = argparse.ArgumentParser()
     parser.add_argument('--out', default='results/scaling_curves.png')
+    parser.add_argument('--scales', nargs='+', choices=scale_names, default=scale_names,
+                        help='Which scales to include (default: all)')
     args = parser.parse_args()
+
+    active_scales = [s for s in SCALES if s[0] in args.scales]
 
     # Collect data
     data = {}
-    for scale_name, _, _ in SCALES:
+    for scale_name, _, _ in active_scales:
         records = load_scale(scale_name)
         if not records:
             print(f"WARNING: no results found for scale '{scale_name}' "
                   f"in results/scaling/{scale_name}/")
         data[scale_name] = records
 
-    x_params  = [p for _, p, _ in SCALES]
-    x_labels  = [lbl for _, _, lbl in SCALES]
-    x_idx     = list(range(len(SCALES)))
+    x_params  = [p for _, p, _ in active_scales]
+    x_labels  = [lbl for _, _, lbl in active_scales]
+    x_idx     = list(range(len(active_scales)))
 
     metrics = [
         ('accuracy',      'Overall accuracy',      'Overall next-token accuracy (%)'),
@@ -96,7 +101,7 @@ def main():
         bl_means, bl_sems = [], []
         sp_means, sp_sems = [], []
 
-        for scale_name, _, _ in SCALES:
+        for scale_name, _, _ in active_scales:
             records = data[scale_name]
             if not records:
                 bl_means.append(float('nan')); bl_sems.append(0)
